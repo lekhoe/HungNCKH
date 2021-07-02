@@ -228,6 +228,7 @@ const AssignReviewer = () => {
                       <th>Mã giảng viên phản biện</th>
                       <th>Tên Giảng viên phản biện</th>
                       <th>Mã đề tài</th>
+                      <th>Tên đề tài</th>
                       <th>Điểm</th>
                       <th>Note</th>
                       <th colspan="2">Hành động</th>
@@ -241,6 +242,7 @@ const AssignReviewer = () => {
                         <td>{item.maGVPB}</td>
                         <td>{item.tenGVPB}</td>
                         <td>{item.maDeTai}</td>
+                        <td>{item.tenDeTai}</td>
                         <td>{item.diem}</td>
                         <td>{item.note}</td>
                         <td><StyledSemester.ButtonAdd onClick={() => OnPutSemesters(item.idPhanBien, item)}>Sửa</StyledSemester.ButtonAdd></td>
@@ -253,7 +255,7 @@ const AssignReviewer = () => {
                   <StyledSemester.PopupContent>
                     <div className="Divpopup">
                       <StyledSemester.PopupTitle>
-                        <StyledSemester.Popuptext> Phân công đề tài cho hội đồng </StyledSemester.Popuptext>
+                        <StyledSemester.Popuptext> Phân công đề tài cho Phản biện</StyledSemester.Popuptext>
                         <StyledSemester.Close onClick={onHide}>&times;</StyledSemester.Close>
                       </StyledSemester.PopupTitle>
                       <div className="save">

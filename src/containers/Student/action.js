@@ -32,11 +32,11 @@ export const AcctionTypes= {
     };
   }
 //---GET STUDENT LOCALHOST -------------------------------
-  export function getStudentLocals() {
+  export function getStudentLocals(idBoMon) {
       
     return {
       type: AcctionTypes.GET_STUDENT_LOCAL,
-      
+      payload: idBoMon,
     };
   }
   

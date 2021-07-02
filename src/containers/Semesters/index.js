@@ -165,7 +165,8 @@ const [changeVersion1, setChangeVersion1] = useState(false);
               <th>Xem</th>
               <th>Mã học kỳ</th>
               <th>Tên học kỳ</th>
-              <th>Ngày tạo</th>
+              <th>Khóa</th>
+              <th>Năm học</th>
               <th colspan="2">Hành động</th>
               
 
@@ -181,8 +182,8 @@ const [changeVersion1, setChangeVersion1] = useState(false);
               </Link>
               <td>{item?.maHocKy ?? ''}</td>
               <td>{item?.tenHocKy ?? ''}</td>
-              
-              <td>{item?.ngayTao ?? ''}</td>
+              <td>k61</td>
+              <td>2020-2021</td>
               <td><StyledSemester.ButtonAdd onClick={() => OnPutSemesters(item.idHocKy, item)}>Sửa</StyledSemester.ButtonAdd></td>
               <td><StyledSemester.Delete onClick={() => onDeleteSemesters(item.idHocKy)}>Xóa</StyledSemester.Delete></td>
               

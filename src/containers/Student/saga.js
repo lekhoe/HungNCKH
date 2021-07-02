@@ -6,7 +6,7 @@ import GetToken from "../Login/getToken";
 import { AcctionTypes, addStudentSuccess, deleteStudentError, deleteStudentSuccess, getStudents, getStudentSuccess, putStudentsSuccess } from "./action";
 
 const GET_API_STUDENT_URL= `https://api.quanlydoan.live/api/SinhVien/SinhVienGetAll/`;//"https://quanlydoan.live/api/Hocky/GetAllHocKy" ; 
-const GET_API_STUDENT_URL_Local=`http://localhost:8006/api/SinhVien/get-thongtin_sinhvien_byIdChuyenNganh/TKT012`;
+const GET_API_STUDENT_URL_Local=`http://localhost:8006/api/SinhVien/get-thongtin_sinhvien_byIdChuyenNganh/`;
 
 //--------- get------------------------
 export function* sagaGetStudents (idHocKy) {
@@ -40,7 +40,7 @@ export function* watchSagaGetStudentList(){
 
 
 //--------- get student local------------------------
-export function* sagaGetStudentLocals () {
+export function* sagaGetStudentLocals (idBoMon) {
  
   //console.log("idHocky ", idHocKy.payload);
    console.log("coki get =", Cookies.get('token'));
@@ -48,7 +48,7 @@ export function* sagaGetStudentLocals () {
    
      try{
        console.log("chạy vào reponsive");
-         const response = yield axios.get(`${GET_API_STUDENT_URL_Local}`
+         const response = yield axios.get(`${GET_API_STUDENT_URL_Local}${idBoMon.payload}`
           
             );
           console.log("aa"+ response);

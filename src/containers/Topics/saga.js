@@ -4,6 +4,7 @@ import GetToken from "../Login/getToken";
 import { AcctionTypes, getTopicSuccess } from "./action";
 
 const GET_API_TOPICS_URL= `https://api.quanlydoan.live/api/DeTai/GetCT/` ; // //https://quanlydoan.live/api
+//const GET_API_TOPICS_URL= `https://api.quanlydoan.live/api/DeTai/GetCT/`
 
 
 

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import Headers from '../../layout/Header';
+import { getSemesters } from '../Semesters/action';
 import { StyledSemester } from '../Semesters/styled';
 import { getStudentLocals, getStudents } from './action';
 
@@ -23,6 +24,13 @@ const StudentList = () => {
     dispatch(getStudents(idHocKy));
   }, []);
   const StudentListSelecter = useSelector((state) => state.reducerStudentList.list);
+  const SemesterSelecter = useSelector((state) => state.reducerSemester.list);
+  
+  const idBoMonselect = SemesterSelecter[0]?.idBoMon;
+  console.log("idBoMon ", idBoMonselect);
+  useEffect(() => {
+    dispatch(getSemesters());
+  }, []);
 
   // thêm mới sinh viên 
   const onShow= ()=>{
@@ -34,7 +42,7 @@ const StudentList = () => {
 
   };
   useEffect(() => {
-    dispatch(getStudentLocals());
+    dispatch(getStudentLocals(idBoMonselect));
   }, []);
   const StudentListSelecter1 = useSelector((state) => state.reducerStudentList.list1);
   const handleChange = (selected) => {
@@ -62,6 +70,7 @@ const StudentList = () => {
               <th>Điện thoại</th>
               <th>Đơn vị thực tập</th>
               <th>Lớp học</th>
+              <th>Chuyên ngành</th>
               <th>Hành động</th>
               
             </tr>
@@ -77,6 +86,7 @@ const StudentList = () => {
               <td>{item.dienThoai}</td>
               <td>{item.donViThucTap}</td>
               <td>{item.lopHoc}</td>
+              <td>Tin Kinh tế</td>
               <td><StyledSemester.ButtonAdd>Sửa</StyledSemester.ButtonAdd></td>
               
                 

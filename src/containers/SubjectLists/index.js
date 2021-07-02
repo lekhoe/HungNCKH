@@ -174,57 +174,7 @@ const SubjectList = () => {
                     <button type="submit" onClick={() => setHide(false)}>Hủy</button>
                   </StyledSemester.DivButton>
                 </StyledSemester.DivInput>
-                {/* <table>
-                <thead>
-                  <tr>
-                    <td>Thêm môn học</td>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>
-                      <input
-                        placeholder="Nhập mã môn học"
-                        type="text"
-                        value={maMonHoc}
-                        onChange={(maMonHoc)=>setMaMonHoc(maMonHoc.target.value)}
-                        />
-                      
-                    </td>
-                  </tr>
-                  <tr>
-                  <td>
-                      <input
-                        placeholder="Nhập tên môn học"
-                        type="text"
-                        value={tenMonHoc}
-                        onChange={(tenMonHoc)=>setTenMonHoc(tenMonHoc.target.value)}
-                        />
-                      
-                    </td>
-                  </tr>
-                  <tr>
-                  <td>
-                      <input
-                        placeholder="Nhập điều kiện "
-                        type="number"
-                        value={typeApprover}
-                        onChange={(typeApprover)=>setTypeApprover(typeApprover.target.value)}
-                        />
-                      
-                    </td>
-                  </tr>
-                  <tr>
-                  <td>
-                    <button type="submit" onClick={() => onAddSubmit()}>
-                    Thêm
-                    </button>
-                    <button type="submit" onClick={() => onHuy()}>Hủy</button>
-                    
-                  </td>
-                </tr>
-                </tbody>
-              </table> */}
+               
               </StyledSemester.PopupContent1>
             </StyledSemester.Popup>
             <table>
