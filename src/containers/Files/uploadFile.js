@@ -40,7 +40,7 @@ export default function () {
 
   };
   ////-------------------dowload file chưa được
-  //const dowloadFile = () => {
+  const dowloadFile = () => {
     // axios.get('https://api.quanlydoan.live/api/File/downloadsDiemPhanBien/08b1918a-58ca-4eba-9ca8-8aa777e20920/2aaa04d9-bba8-46a7-a521-a66a429fe1c3', {
     //   responseType: 'blob',
     //   type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -64,27 +64,26 @@ export default function () {
     //     // reject(err);
     //   });
     ///---cach dowload 2
-    // axios.get('https://api.quanlydoan.live/api/File/downloadsDiemPhanBien/08b1918a-58ca-4eba-9ca8-8aa777e20920/2aaa04d9-bba8-46a7-a521-a66a429fe1c3'
-    //   , {
-    //     responseType: 'blob',
-    //     headers: {
-    //       //"content-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    //       // "Accept": "application/json",
-    //       Authorization: 'Bearer ' + `${Cookies.get('token')}`
-    //     }
-    //   })
-    //   .then((response) => {
-    //     const reader = new window.FileReader();
-    //     reader.readAsBinaryString(response.data);
-    //     reader.onload = function () {
-    //       const imageDataUrl = reader.result;
-    //       return (imageDataUrl);
-    //     };
-    //   })
-    //   .catch((err) => {
-    //     //reject(err);
-    //   });
- // }
+    axios.get('https://api.quanlydoan.live/api/File/downloadsDiemPhanBien/08b1918a-58ca-4eba-9ca8-8aa777e20920/c9fe75d5-58dd-430f-b82c-c3ed4673b7de'
+      , {
+        responseType: 'blob',
+        headers: {
+          //"content-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          // "Accept": "application/json",
+          Authorization: 'Bearer ' + `${Cookies.get('token')}`
+        }
+      })
+      .then((response) => {
+        const blob = new Blob([response.data], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+        const url = URL.createObjectURL(blob);
+        window.open(url);
+
+      })
+      .catch((err) => {
+        //reject(err);
+      });
+
+  }
 
   console.log('file:', uploadFile);
   return (
@@ -96,13 +95,14 @@ export default function () {
         <input type="submit" />
       </form>
       <hr />
-      {/* <button onClick={() => dowloadFile()}>
+      <button onClick={() => dowloadFile()}>
         dowloadFile
-      </button> */}
+      </button>
     </div>
   );
 };
 
+/**test github push code khoe */
 
 
 
