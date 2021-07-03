@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { useParams } from "react-router";
+//import { useParams } from "react-router";
 import HeaderMonHoc from "../../layout/HeaderMonHoc";
 import { StyledSemester } from "../Semesters/styled";
 import { getTopics } from "../Topics/action";
@@ -14,13 +14,19 @@ import Cookies from 'js-cookie';
 import { ImFileExcel } from 'react-icons/im';
 import { AiOutlineDownload } from 'react-icons/ai';
 import { getFolders } from './action';
-import './evaluationBoards.css'
+import './evaluationBoards.css';
+import { Link, Route, Switch, useParams, useRouteMatch } from "react-router-dom";
 
 const EvaluationBoard = () => {
   const GET_API_STUDENTS_URL = "https://api.quanlydoan.live/api"
   const dispatch = useDispatch();
-  let { idHocKy } = useParams();
+
   let { idMonHoc } = useParams();
+  let { idHocKy } = useParams();
+  let {tenHocKy} = useParams();
+  let {tenMonHoc} = useParams();
+  let{typeApprover}= useParams();
+
   const GET_API_FILE_URL = `https://api.quanlydoan.live/api/File/SearchAll/FolderName/`;
   const evaluationBoardSelecter = useSelector((state) => state.reducerEvaluationBoard.list);
   const isLoading = useSelector((state) => state.reducerEvaluationBoard.isLoading);
@@ -267,7 +273,8 @@ const EvaluationBoard = () => {
                       <th>Tên Môn học</th>
 
                       <th>Tên học kỳ</th>
-
+                      <th>Địa điểm bảo vệ</th>
+                      <th>Chi tiết</th>
                       <th>Phân công</th>
                       <th colspan="2">Hành động</th>
 
@@ -282,7 +289,8 @@ const EvaluationBoard = () => {
                         <td>{item.tenMonHoc}</td>
 
                         <td>{item.tenHocKy}</td>
-
+                        <td>Tầng 701-Bộ môn CNPM</td>
+                        <td><StyledSemester.See><Link to={`/mon-hoc/${tenHocKy}/${idHocKy}/${tenMonHoc}/${idMonHoc}/${typeApprover}/hoi-dong-tot-nghiep/chi-tiet`}>Chi tiết</Link></StyledSemester.See></td>
                         <td >
                           <StyledSemester.See
                             onClick={() => onShow(item)}>

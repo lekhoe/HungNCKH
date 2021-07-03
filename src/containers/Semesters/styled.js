@@ -48,6 +48,22 @@ export const StyledSemester= {
         border-radius: 5px;
     `,
     Body: styled.div`
+        .button-add{
+            margin-left: auto;
+    margin-right: 16px;
+    width: 150px;
+    height: 40px;
+    border: 1px solid #4682b4;
+    border-radius: 10px;
+    outline: none;
+    cursor: pointer;
+    color: #4682b4;
+    transition: 0.4s;
+    &:hover{
+        background-color: #3498db;
+        color: #ffffff;
+    }
+        }
         .folderIcon{
             margin-right: 10px;
             font-size: 27px;
