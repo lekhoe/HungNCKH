@@ -153,7 +153,7 @@ const SubjectList = () => {
                       ))}
                     </select>
 
-
+                    <label>Cấp độ đánh giá</label>
                     <select onChange={(val)=>setTypeApprover(val.target.value)}>
                       <option value={0}>
                         Giảng viên hướng dẫn

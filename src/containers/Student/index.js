@@ -71,8 +71,7 @@ const StudentList = () => {
               <th>Đơn vị thực tập</th>
               <th>Lớp học</th>
               <th>Chuyên ngành</th>
-              <th>Khóa</th>
-              <th>Hành động</th>
+              {/* <th>Khóa</th> */}
               
             </tr>
           </thead>
@@ -87,9 +86,8 @@ const StudentList = () => {
               <td>{item.dienThoai}</td>
               <td>{item.donViThucTap}</td>
               <td>{item.lopHoc}</td>
-              <td>Tin Kinh tế</td>
-              <td>61</td>
-              <td><StyledSemester.ButtonAdd>Sửa</StyledSemester.ButtonAdd></td>
+              <td>{item.tenChuyenNganh}</td>
+              {/* <td>61</td> */}
               
                 
               

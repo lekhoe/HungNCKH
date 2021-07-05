@@ -118,6 +118,7 @@ function Student() {
       }
     }
   }
+  
   function topicAssign() {
     axios.post(GET_API_STUDENTS_URL + `/ChiTietDeTai/ListChiTietDeTai/${idGVHD}/${idHocKy}/${idMonHoc}`, listIdDeTai, GetToken())
   }

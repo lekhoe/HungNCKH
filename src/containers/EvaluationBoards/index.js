@@ -42,7 +42,7 @@ const EvaluationBoard = () => {
   const [showPopupEdit, setShowPopupEdit] = useState(false);
   const [showPopupMess, setShowPopupMess] = useState(false);
   const [showFile, setShowFile] = useState(false);
-  const [maHoiDong, setMaHoiDong] = useState('');
+  const [address, setAddress] = useState('');
   const [tenHoiDong, setTenHoiDong] = useState('');
   const [ngayBaoVe, setNgayBaoVe] = useState('');
   const [idHoiDong, setIdHoiDong] = useState('');
@@ -115,8 +115,9 @@ const EvaluationBoard = () => {
   function SaveCouncil() {
     let body =
     {
-      "maHoiDong": maHoiDong,
+      // "maHoiDong": maHoiDong,
       "tenHoiDong": tenHoiDong,
+      "diaDiem": address,
       "ngayBaoVe": ngayBaoVe,
     }
     if (showPopupAdd) {
@@ -147,7 +148,7 @@ const EvaluationBoard = () => {
   function EditCouncil(item) {
     setIdHoiDong(item.idHoiDong)
     setShowPopupEdit(true)
-    setMaHoiDong(item?.maHoiDong)
+    setAddress(item?.diaDiem)
     setTenHoiDong(item?.tenHoiDong)
     // var d = new Date(item?.ngayBaoVe);
     // var n = d.toLocaleDateString();
@@ -233,11 +234,11 @@ const EvaluationBoard = () => {
                 {/* <h1>Quản lý các Folder</h1> */}
                 <StyledSemester.Body>
                   <div className="container-add">
-                    <div className="item">
+                    {/* <div className="item">
                       <div className="item-title">Mã hội đồng</div>
                       <input className="item-input" required type="text" placeholder="Mã hội đồng" defaultValue={maHoiDong} onChange={(val) => setMaHoiDong(val.target.value)} />
-                      {/* {!maHoiDong ?<p>Vui lòng nhập thông tin</p>:''} */}
-                    </div>
+                      {!maHoiDong ?<p>Vui lòng nhập thông tin</p>:''}
+                    </div> */}
                     <div className="item">
                       <div className="item-title">Tên hội đồng</div>
                       <input className="item-input" required type="text" placeholder="Tên hội đồng" defaultValue={tenHoiDong} onChange={(val) => setTenHoiDong(val.target.value)} />
@@ -246,8 +247,13 @@ const EvaluationBoard = () => {
                       <div className="item-title">Ngày Bảo vệ</div>
                       <input className="item-input" required type="date" onChange={(val) => setNgayBaoVe(val.target.value)} />
                     </div>
+                    <div className="item">
+                      <div className="item-title">Địa điểm bảo vệ</div>
+                      <input className="item-input" required type="text" placeholder="Địa điểm bảo vệ" defaultValue={address} onChange={(val) => setAddress(val.target.value)} />
+                      {/* {!maHoiDong ?<p>Vui lòng nhập thông tin</p>:''} */}
+                    </div>
                     <div className="item-submit">
-                      <button className="submit-form" disabled={!maHoiDong || !tenHoiDong || !ngayBaoVe ? true : false} onClick={() => SaveCouncil()}>Lưu</button>
+                      <button className="submit-form" disabled={!tenHoiDong || !ngayBaoVe ? true : false} onClick={() => SaveCouncil()}>Lưu</button>
                     </div>
                   </div>
                 </StyledSemester.Body>

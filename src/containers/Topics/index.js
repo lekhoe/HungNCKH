@@ -151,21 +151,20 @@ const Topic = () => {
         {showPopupAdd || showPopupEdit || showPopupInputPoint ? <div className="full-screen-popup">
           <div className="popup">
             <div className="popup-header">
-              <span className="label-header">Hội đồng tốt nghiệp</span>
+              <span className="label-header">Thêm đề tài</span>
               <button className="close-popup" onClick={() => closePopup()}>x</button>
             </div>
             <div className="popup-content">
               {/* <h1>Quản lý các Folder</h1> */}
               <StyledSemester.Body>
                 <div className="container-add">
-                  <div className="item">
+                  {/* <div className="item">
                     <div className="item-title">Mã đề tài</div>
                     {!showPopupEdit && !showPopupInputPoint ?
                       <input className="item-input" required type="text" placeholder="Mã đề tài" defaultValue={maDeTai} onChange={(val) => setMaDeTai(val.target.value)} />
                       :
                       <input className="item-input" required type="text" defaultValue={maDeTai} readOnly />}
-                    {/* {!maHoiDong ?<p>Vui lòng nhập thông tin</p>:''} */}
-                  </div>
+                  </div> */}
                   <div className="item">
                     <div className="item-title">Tên đề tài</div>
                     {!showPopupInputPoint ?

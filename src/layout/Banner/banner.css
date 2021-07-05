@@ -1,0 +1,25 @@
+.banner{
+    position: relative;
+}
+
+.banner-logout{
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+}
+
+
+.banner-logout-button{
+    width: 100px;
+    height: 35px;
+    background-color: #74b9ff;
+    border-radius: 8px;
+    transition: 0.4s;
+    border: 0;
+    color: #ffffff;
+}
+
+.banner-logout-button:hover{
+    background-color: #0984e3;
+}
+

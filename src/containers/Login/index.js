@@ -93,7 +93,7 @@ useEffect(() => {
                 </div>
             </StyledSemester.Form>
             <div className="button">
-                <button onClick={dangnhap}>ĐĂNG NHẬP</button>
+                <button onClick={()=>dangnhap()}>ĐĂNG NHẬP</button>
                 </div>
                 <p>Quên mật khẩu ?</p>
                 </div>
