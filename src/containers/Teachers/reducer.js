@@ -15,7 +15,7 @@ const default_list = (state = INITSTALL, action) => {
         case AcctionTypes.GET_TEACHERS_SUCCESS:
             return {
                 ...state,
-                list: action.payload.data,
+                list: action.payload,
                 isLoading: false,
             };
 

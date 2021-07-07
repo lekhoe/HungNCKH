@@ -129,7 +129,7 @@ function Student() {
         <div><HeaderMonHoc /></div>
         <div className="Body">
           <div>
-            <h1> Phân công Đề tài cho Giảng Viên {tenHocKy}</h1>
+            <h1> Phân công đề tài cho giảng viên {tenHocKy}</h1>
             {isLoading ? (
               <div>Loading</div>
             ) : (
