@@ -56,10 +56,10 @@ const StudentList = () => {
   useEffect(() => {
     if (hide == false)
       axios.get(API_STUDENT.GET_API_STUDENT.format(idBoMonselect)).then((response) => { setStudentListSelecter1(response.data.data) }).catch((err) => { alert(err.response.data.message) })
-      
+
   }, [hide]);
 
-  function CallApiGetDataStudentChoose(){
+  function CallApiGetDataStudentChoose() {
     axios.get(API_STUDENT.GET_API_STUDENT_CHOOSE.format(idHocKy), GetToken()).then((response) => { setStudentListSelecter(response.data.data) }).catch((err) => { alert(err.response.data.message) })
   }
 
@@ -91,23 +91,76 @@ const StudentList = () => {
     console.log(body)
     axios.post(API_STUDENT.INSERT_API_LIST_STUDENT.format(idHocKy), body[0], GetToken()).then(response => { console.log(response) })
     setHide(true)
-    setTimeout(function(){ CallApiGetDataStudentChoose(); }, 500);
+    setTimeout(function () { CallApiGetDataStudentChoose(); }, 500);
   }
 
-  function InputUpdatePracticeUnit(item){
+  function InputUpdatePracticeUnit(item) {
     setIdSinhVien(item.idSinhVien)
   }
 
-  function UpdatePracticeUnit(){
-    let body =[{
+  function UpdatePracticeUnit() {
+    let body = [{
       "idSinnhVien": idSinhVien,
       "donViThucTap": donViThucTap,
-      }]
+    }]
     axios.put(API_STUDENT.UPDATE_API_STUDENT.format(idSinhVien), body, GetToken()).then(response => { console.log(response) })
-    setTimeout(function(){ CallApiGetDataStudentChoose(); }, 500);
+    setTimeout(function () { CallApiGetDataStudentChoose(); }, 500);
   }
   return (
     < >
+      <StyledSemester.Popup id="hide" style={hide ? { display: "none" } : { display: "block" }} >
+        <StyledSemester.PopupContent>
+          <div className="Divpopup">
+            <StyledSemester.PopupTitle>
+              <StyledSemester.Popuptext> Thêm sinh viên </StyledSemester.Popuptext>
+              <StyledSemester.Close onClick={onHide}>&times;</StyledSemester.Close>
+            </StyledSemester.PopupTitle>
+            <div className="save">
+              <Button
+                name={"Lưu"}
+                background={'#2ecc71'}
+                color={"#ffffff"}
+                onClick={() => { ChooseStudent() }}
+                className={'save-studen-button'}
+              />
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Mã sinh viên</th>
+                  <th>Tên sinh viên</th>
+                  <th>Hòm thư</th>
+                  <th>Điện thoại</th>
+                  <th>Tên Môn học</th>
+                  <th>Tên Lớp</th>
+
+                  <th>Chọn</th>
+
+                </tr>
+              </thead>
+              <tbody>
+                {studentListSelecter1?.map((item, index) => (
+                  <tr key={index}>
+                    <td>{item.maSinhVien}</td>
+                    <td>{item.hoTen}</td>
+                    <td>{item.tenSinhVien}</td>
+                    <td>{item.homThu}</td>
+                    <td>{item.dienThoai}</td>
+                    <td>{item.tenLop}</td>
+                    <td><input
+                      type="checkbox"
+                      value={item.id}
+                      id="checkbox1"
+                      onChange={() => handleChange(item)}
+                    /></td>
+                  </tr>
+                ))}
+
+              </tbody>
+            </table>
+          </div>
+        </StyledSemester.PopupContent>
+      </StyledSemester.Popup>
       <StyledSemester.Flex>
         <div><Headers /></div>
         <div className="Body">
@@ -124,7 +177,7 @@ const StudentList = () => {
                 className={'save-studen-button'}
               />
             </div>
-            <StyledSemester.Body>
+            <StyledSemester.Body style={{height: '470px', overflowY: "scroll"}}>
               {/* <StyledSemester.ButtonAdd  onClick={()=> onShow()}>Thêm sinh viên</StyledSemester.ButtonAdd> */}
               <table>
                 <thead>
@@ -148,68 +201,13 @@ const StudentList = () => {
                       <td>{item.tenSinhVien}</td>
                       <td>{item.email}</td>
                       <td>{item.dienThoai}</td>
-                      <td><div onClick={()=>InputUpdatePracticeUnit(item)}><input className="input-practice-unit" onChange={(val)=> setDonViThucTap(val.target.value)} onBlur={()=>UpdatePracticeUnit()} defaultValue={item.donViThucTap} value={index.donViThucTap}/></div></td>
+                      <td><div onClick={() => InputUpdatePracticeUnit(item)}><input className="input-practice-unit" onChange={(val) => setDonViThucTap(val.target.value)} onBlur={() => UpdatePracticeUnit()} defaultValue={item.donViThucTap} value={index.donViThucTap} /></div></td>
                       <td>{item.lopHoc}</td>
                       <td>{item.tenChuyenNganh}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
-
-              <StyledSemester.Popup id="hide" style={hide ? { display: "none" } : { display: "block" }} >
-                <StyledSemester.PopupContent>
-                  <div className="Divpopup">
-                    <StyledSemester.PopupTitle>
-                      <StyledSemester.Popuptext> Thêm sinh viên </StyledSemester.Popuptext>
-                      <StyledSemester.Close onClick={onHide}>&times;</StyledSemester.Close>
-                    </StyledSemester.PopupTitle>
-                    <div className="save">
-                      <Button
-                        name={"Lưu"}
-                        background={'#2ecc71'}
-                        color={"#ffffff"}
-                        onClick={() =>{ ChooseStudent()}}
-                        className={'save-studen-button'}
-                      />
-                    </div>
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>Mã sinh viên</th>
-                          <th>Tên sinh viên</th>
-                          <th>Hòm thư</th>
-                          <th>Điện thoại</th>
-                          <th>Tên Môn học</th>
-                          <th>Tên Lớp</th>
-
-                          <th>Chọn</th>
-
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {studentListSelecter1?.map((item, index) => (
-                          <tr key={index}>
-                            <td>{item.maSinhVien}</td>
-                            <td>{item.hoTen}</td>
-                            <td>{item.tenSinhVien}</td>
-                            <td>{item.homThu}</td>
-                            <td>{item.dienThoai}</td>
-                            <td>{item.tenLop}</td>
-                            <td><input
-                              type="checkbox"
-                              value={item.id}
-                              id="checkbox1"
-                              onChange={() => handleChange(item)}
-                            /></td>
-                          </tr>
-                        ))}
-
-                      </tbody>
-                    </table>
-                  </div>
-                </StyledSemester.PopupContent>
-              </StyledSemester.Popup>
-
             </StyledSemester.Body>
           </div>
         </div>

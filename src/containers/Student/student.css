@@ -21,3 +21,7 @@
 .input-practice-unit:focus{
     border: 1px solid #000000;
 }
+
+.Body{
+    height: calc(100vh - 159px);
+}

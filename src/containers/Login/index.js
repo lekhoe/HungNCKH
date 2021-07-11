@@ -48,8 +48,6 @@ useEffect(() => {
     const dangnhap = () => {
         console.log({userName,password});
         if(userName && password){
-            
-            
             dispatch(addLogin(data));
            
             
