@@ -180,11 +180,11 @@ const AssignReviewer = () => {
   }
 
   function UpdatePointFeedback() {
-    let body = [{
+    let body = {
       "note": '',
       "diem": point,
-    }]
-    axios.put(API_FEEDBACK.PUT_API_COUNCIL_POINT.format(idPhanBien), body, GetToken()).then(response => { console.log(response) })
+    }
+    axios.put(API_FEEDBACK.PUT_API_FEEDBACK_POINT.format(idPhanBien), body, GetToken()).then(response => { console.log(response) })
     setTimeout(function () { CallApiGetListAssign(); }, 500);
   }
 

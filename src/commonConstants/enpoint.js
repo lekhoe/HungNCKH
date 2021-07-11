@@ -62,7 +62,7 @@ const API_FEEDBACK={
     POST_API_FEEDBACK_LIST_TOPIC: API_PROTOCOL_ON + 'PhanBien/DeTaitoPhanBien/{0}/{1}/{2}',
     POST_API_FEEDBACK_POINT: API_PROTOCOL_ON + 'PhanBien/PhanBien/{0}',
     DELETE_API_FEEDBACK: API_PROTOCOL_ON + 'PhanBien/{0}/{1}/{2}',
-    PUT_API_COUNCIL_POINT: API_PROTOCOL_ON + 'PhanBien/UpdateDiemPhanBien/{0}/{1}',
+    PUT_API_FEEDBACK_POINT: API_PROTOCOL_ON + 'PhanBien/UpdateDiemPhanBien/{0}',
 }
 
 const API_SUBJECT={

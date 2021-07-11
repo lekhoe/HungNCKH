@@ -71,6 +71,7 @@ const EvaluationBoard = () => {
   const [fileName, setFileName] = useState('');
   const [idFile, setIdFile] = useState('');
   const [showPopupSaveFile, setShowPopupSaveFile] = useState(false);
+  const [showPopupAddEdit, setShowPopupAddEdit] = useState(false);
   const [showPopupChooseFilePoint, setShowPopupChooseFilePoint] = useState(false);
 
   //call api--------------------------------
@@ -163,42 +164,42 @@ const EvaluationBoard = () => {
       "diaDiem": address,
       "ngayBaoVe": ngayBaoVe,
     }
-    if (showPopupAdd) {
+    if (!showPopupEdit) {
 
       axios.post(GET_API_STUDENTS_URL + `/HoiDongTotNghiep/InsertHoiDong/${idHocKy}/${idMonHoc}`, body, GetToken()).then(response => { alert(response.data.message) })
-    }
-    if (showPopupEdit) {
+    }else{
       axios.put(GET_API_STUDENTS_URL + `/HoiDongTotNghiep/UpdateHoiDong/${idHoiDong}/${idHocKy}/${idMonHoc}`, body, GetToken()).then(response => { alert(response.data.message) })
     }
+    setShowPopupAddEdit(false)
+    setTimeout(function () { CallApiGetListCouncilOfSubject() }, 500);
   }
 
   //confirm xóa hội đồng
   function ConformDeleteCouncil(item) {
     // alert("Bạn có chắc muốn xóa hội đồng có id " + <span style={{ fontWeight: 'bold' }}>{item.idHoiDong}</span> + "không? ");
     setShowPopupMess(true)
-    setMess("Bạn có chắc muốn xóa hội đồng có id " + item.maHoiDong + " không? ")
+    setMaHoiDong(item.maHoiDong)
     setIdHoiDong(item.idHoiDong)
   }
 
   //call api xóa hội đồng
   function Delete() {
     axios.delete(GET_API_STUDENTS_URL + `/HoiDongTotNghiep/DeleteHoiDongAsync/${idHoiDong}`, GetToken()).then(response => { alert(response.data.message) })
+    CallApiGetListCouncilOfSubject()
     setShowPopupMess(false)
   }
 
   //xử lý sụ kiện nhấn nút sửa hội đồng
   function EditCouncil(item) {
+    setShowPopupAddEdit(true)
     setIdHoiDong(item.idHoiDong)
     setShowPopupEdit(true)
     setAddress(item?.diaDiem)
     setTenHoiDong(item?.tenHoiDong)
-    // var d = new Date(item?.ngayBaoVe);
-    // var n = d.toLocaleDateString();
-    // setNgayBaoVe(n)
   }
 
-  function closePopup() {
-    setShowPopupAdd(false);
+  function ActionAdd(){
+    setShowPopupAddEdit(true)
     setShowPopupEdit(false)
   }
 
@@ -270,7 +271,6 @@ const EvaluationBoard = () => {
     setMaGiangvien(item.maGVHD)
     setIdHoiDong(item.idHoiDong)
     setShowPopupDelete(true)
-    debugger
   }
 
   //call api xóa giảng viên trong hội đồng
@@ -315,8 +315,70 @@ function CallApiSaveFilePoint(){
   setShowPopupChooseFilePoint(false)
 }
 
+useEffect(() => {
+  if(!showPopupAddEdit)
+  {
+    setTenHoiDong("")
+    setAddress("")
+  }
+}, [showPopupAddEdit]);
+
   return (
     <>
+    <Modal
+        show={showPopupMess}
+        mess={"Bạn có muốn Xóa hội đồng " + maHoiDong +  " không?"}
+        button={[
+          <Button
+            name={"Hủy"}
+            onClick={()=>setShowPopupMess(false)}
+          />,
+          <Button
+            name={"Xóa"}
+            background={'#e74c3c'}
+            color
+            onClick={()=>Delete()}
+          />
+        ]}
+        onClickClose={()=>setShowPopupMess(false)}
+      />
+      <Modal
+        show={showPopupAddEdit}
+        title={"Thêm mới Hội đồng"}
+        body={[
+          <div className="container-add">
+          {/* <div className="item">
+            <div className="item-title">Mã hội đồng</div>
+            <input className="item-input" required type="text" placeholder="Mã hội đồng" defaultValue={maHoiDong} onChange={(val) => setMaHoiDong(val.target.value)} />
+            {!maHoiDong ?<p>Vui lòng nhập thông tin</p>:''}
+          </div> */}
+          <div className="item">
+            <div className="item-title">Tên hội đồng</div>
+            <input className="item-input" required type="text" placeholder="Tên hội đồng" defaultValue={tenHoiDong} onChange={(val) => setTenHoiDong(val.target.value)} />
+          </div>
+          <div className="item">
+            <div className="item-title">Ngày Bảo vệ</div>
+            <input className="item-input" required type="date" onChange={(val) => setNgayBaoVe(val.target.value)} />
+          </div>
+          <div className="item">
+            <div className="item-title">Địa điểm bảo vệ</div>
+            <input className="item-input" required type="text" placeholder="Địa điểm bảo vệ" defaultValue={address} onChange={(val) => setAddress(val.target.value)} />
+            {/* {!maHoiDong ?<p>Vui lòng nhập thông tin</p>:''} */}
+          </div>
+          {/* <div className="item-submit">
+            <button className="submit-form" disabled={!tenHoiDong || !ngayBaoVe ? true : false} onClick={() => SaveCouncil()}>Lưu</button>
+          </div> */}
+        </div>]}
+        button={[
+          <Button
+            name={"Lưu"}
+            background={"#2ecc71"}
+            onClick={() => SaveCouncil()}
+            disabled={!tenHoiDong || !ngayBaoVe || !address ? true : false}
+          />
+        ]}
+        onClickClose={()=> setShowPopupAddEdit(false)}
+      />
       <Modal
         show={showPopupChooseFilePoint}
         title={"Tệp điểm"}
@@ -519,7 +581,7 @@ function CallApiSaveFilePoint(){
       <StyledSemester.Flex>
         <div><HeaderMonHoc /></div>
         <div className="Body">
-          {showPopupMess ? <div className="full-screen-popup">
+          {/* {showPopupMess ? <div className="full-screen-popup">
             <div className="popup-mess">
               <div className="popup-mess-header">
                 <span className="label-mess-header">Thông báo</span>
@@ -531,85 +593,7 @@ function CallApiSaveFilePoint(){
                 <button className="close-popup" onClick={() => Delete()}>Xóa</button>
               </div>
             </div>
-          </div> : ''}
-          {showPopup ? <div className="full-screen-popup">
-            <div className="popup">
-              <div className="popup-header">
-                <span className="label-header">Tệp điểm</span>
-                <button className="close-popup" onClick={() => setShowPopup(false)}>x</button>
-              </div>
-              <div className="popup-content">
-                {/* <h1>Quản lý các Folder</h1> */}
-                {!showFile ? <StyledSemester.Body>
-                  {folderSelecter.map((item, index) => {
-                    return (
-                      // <Link to={`/mon-hoc/${tenHocKy}/${idHocKy}/${tenMonHoc}/${idMonHoc}/${typeApprover}/quan-ly-folder/file/${item.id}`}>
-                      <div className="folder" key={index} onClick={() => callApiLoadFile(item)}>
-                        <div className="folderIcon"><FcFolder /></div>
-                        <div className="nameFolder">{item.folderName}</div>
-                      </div>
-                      // </Link>
-                    )
-                  })}
-
-
-                </StyledSemester.Body>
-                  :
-                  <StyledSemester.Body>
-                    <button className="close-popup123" onClick={() => setShowFile(false)}>x</button>
-                    {fileSelecter?.map((item, index) => (
-
-                      <div className="bodyFile" key={index}>
-                        <div className="iconFile"><ImFileExcel /></div>
-                        <div className="nameFile">{item.fileName}</div>
-
-                        <div className="iconDown" onClick={() => someFunction(item.idFile, item.url)}><AiOutlineDownload /></div>
-
-                      </div>
-                    ))}
-                  </StyledSemester.Body>}
-
-              </div>
-            </div>
-          </div> : ''}
-
-          {showPopupAdd || showPopupEdit ? <div className="full-screen-popup">
-            <div className="popup">
-              <div className="popup-header">
-                <span className="label-header">Hội đồng tốt nghiệp</span>
-                <button className="close-popup" onClick={() => closePopup()}>x</button>
-              </div>
-              <div className="popup-content">
-                {/* <h1>Quản lý các Folder</h1> */}
-                <StyledSemester.Body>
-                  <div className="container-add">
-                    {/* <div className="item">
-                      <div className="item-title">Mã hội đồng</div>
-                      <input className="item-input" required type="text" placeholder="Mã hội đồng" defaultValue={maHoiDong} onChange={(val) => setMaHoiDong(val.target.value)} />
-                      {!maHoiDong ?<p>Vui lòng nhập thông tin</p>:''}
-                    </div> */}
-                    <div className="item">
-                      <div className="item-title">Tên hội đồng</div>
-                      <input className="item-input" required type="text" placeholder="Tên hội đồng" defaultValue={tenHoiDong} onChange={(val) => setTenHoiDong(val.target.value)} />
-                    </div>
-                    <div className="item">
-                      <div className="item-title">Ngày Bảo vệ</div>
-                      <input className="item-input" required type="date" onChange={(val) => setNgayBaoVe(val.target.value)} />
-                    </div>
-                    <div className="item">
-                      <div className="item-title">Địa điểm bảo vệ</div>
-                      <input className="item-input" required type="text" placeholder="Địa điểm bảo vệ" defaultValue={address} onChange={(val) => setAddress(val.target.value)} />
-                      {/* {!maHoiDong ?<p>Vui lòng nhập thông tin</p>:''} */}
-                    </div>
-                    <div className="item-submit">
-                      <button className="submit-form" disabled={!tenHoiDong || !ngayBaoVe ? true : false} onClick={() => SaveCouncil()}>Lưu</button>
-                    </div>
-                  </div>
-                </StyledSemester.Body>
-
-              </div>
-            </div>
-          </div> : ''}
+          </div> : ''} */}
           <div>
             <h1 style={{ display: 'flex', marginRight: 'auto' }}>Hội đồng - {tenHocKy}
 
@@ -624,7 +608,7 @@ function CallApiSaveFilePoint(){
                     background={"#3498db"}
                     color={"#ffffff"}
                     className={"button-add-council"}
-                    onClick={() => setShowPopupAdd(true)}
+                    onClick={() => ActionAdd()}
                   />
                   <Button
                     name={"Vào điểm"}

@@ -120,6 +120,7 @@ const SubjectList = () => {
     setChangeVersion(true);
 
   };
+
   const onPut = (item) => {
     setHide(true);
     setChangeVersion(false);
@@ -129,6 +130,7 @@ const SubjectList = () => {
     setNameMonTienQuyet(item.nameMonTienQuyet);
     setSoLuongPhanBien(item.soLuongPhanBien);
     setSoLuongGVHD(item.soLuongGVHD)
+    setTypeApprover(item.typeApprover)
 
   }
 
