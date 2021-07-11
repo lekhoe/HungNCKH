@@ -16,6 +16,9 @@ import axios from "axios";
 import { ImFileExcel } from 'react-icons/im';
 import Cookies from 'js-cookie';
 import { AiOutlineDownload } from 'react-icons/ai';
+import Button from "../CommonComponent/Button/Button";
+import { API_FEEDBACK, API_FILE } from "../../commonConstants/enpoint";
+import Modal from "../CommonComponent/Modal/Modal";
 
 const AssignReviewer = () => {
   let { idHocKy } = useParams();
@@ -36,6 +39,10 @@ const AssignReviewer = () => {
   const [hide, setHide] = useState(true);
   const [showPopup, setShowPopup] = useState(false);
   const [showFile, setShowFile] = useState(false);
+  const [showPopupSaveFile, setShowPopupSaveFile] = useState(false);
+  const [showPopupChooseFilePoint, setShowPopupChooseFilePoint] = useState(false);
+  const [fileName, setFileName] = useState('');
+  const [idFile, setIdFile] = useState('');
 
   //-------------------sửa-----------------------------
   const OnPutSemesters = (idPhanBien, item) => {
@@ -127,61 +134,118 @@ const AssignReviewer = () => {
 
   }
 
+  function ExportFileCouncil() {
+    axios.get(API_FILE.GET_API_DOWNLOAD_FILE_REVIEWL.format(idHocKy, idMonHoc)
+      , {
+        responseType: 'blob',
+        headers: {
+          //"content-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          // "Accept": "application/json",
+          Authorization: 'Bearer ' + `${Cookies.get('token')}`
+        }
+      })
+      .then((response) => {
+        const blob = new Blob([response.data], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+        const url = URL.createObjectURL(blob);
+        window.open(url);
+
+      })
+      .catch((err) => {
+        //reject(err);
+      });
+  }
+
+  //xác nhận file vào điểm
+  function ConfirmSaveFilePoint(item){
+    setFileName(item.fileName)
+    setIdFile(item.idFile)
+    setShowPopupSaveFile(true)
+  }
+
+function CallApiSaveFilePoint(){
+  axios.post(API_FEEDBACK.POST_API_FEEDBACK_POINT.format(idFile), '', GetToken()).then((response)=>{alert(response.data.message)})
+  setShowPopupSaveFile(false)
+  setShowPopupChooseFilePoint(false)
+}
+
   return (
     <>
+    <Modal
+        show={showPopupChooseFilePoint}
+        title={"Tệp điểm"}
+        body={
+          !showFile ? [
+            <div className="list-folder">
+              {folderSelecter.map((item, index) => {
+                return (
+                  <div className="folder-choose-point" key={index} onClick={() => callApiLoadFile(item)}>
+                    <div className="folder-icon"><FcFolder /></div>
+                    <div className="name-folder">{item.folderName}</div>
+                  </div>
+                );
+              })}
+            </div>
+          ] :
+            [
+              <div className="list-folder">
+                {fileSelecter?.map((item, index) => (
+                  <div className="folder-choose-point" key={index} onClick={() => ConfirmSaveFilePoint(item)}>
+                    <div className="folder-icon"><ImFileExcel /></div>
+                    <div className="name-folder">{item.fileName}</div>
+                  </div>
+                ))}
+              </div>]}
+        button={showFile ? [
+          <Button
+            name={"Folder"}
+            onClick={() => setShowFile(false)}
+          />
+        ] : ''}
+        onClickClose={()=> setShowPopupChooseFilePoint(false)}
+      />
+      <Modal
+        show={showPopupSaveFile}
+        mess={"Bạn có muốn nhập điểm từ file " + fileName +  " không?"}
+        button={[
+          <Button
+            name={"Hủy"}
+            onClick={()=>setShowPopupSaveFile(false)}
+          />,
+          <Button
+            name={"OK"}
+            background={'#3498db'}
+            color
+            onClick={()=>CallApiSaveFilePoint()}
+          />
+        ]}
+        onClickClose={()=>setShowPopupSaveFile(false)}
+      />
       <StyledSemester.Flex>
         <div><HeaderMonHoc /></div>
         <div className="Body">
-          {showPopup ? <div className="full-screen-popup">
-            <div className="popup">
-              <div className="popup-header">
-                <span className="label-header">Tệp điểm</span>
-                <button className="close-popup" onClick={() => setShowPopup(false)}>x</button>
-              </div>
-              <div className="popup-content">
-                {/* <h1>Quản lý các Folder</h1> */}
-                {!showFile ? <StyledSemester.Body>
-                  {folderSelecter.map((item, index) => {
-                    return (
-                      // <Link to={`/mon-hoc/${tenHocKy}/${idHocKy}/${tenMonHoc}/${idMonHoc}/${typeApprover}/quan-ly-folder/file/${item.id}`}>
-                      <div className="folder" key={index} onClick={() => callApiLoadFile(item)}>
-                        <div className="folderIcon"><FcFolder /></div>
-                        <div className="nameFolder">{item.folderName}</div>
-                      </div>
-                      // </Link>
-                    )
-                  })}
-
-
-                </StyledSemester.Body>
-                  :
-                  <StyledSemester.Body>
-                    <button className="close-popup123" onClick={() => setShowFile(false)}>x</button>
-                    {fileSelecter?.map((item, index) => (
-
-                      <div className="bodyFile" key={index}>
-                        <div className="iconFile"><ImFileExcel /></div>
-                        <div className="nameFile">{item.fileName}</div>
-
-                        <div className="iconDown" onClick={() => someFunction(item.idFile, item.url)}><AiOutlineDownload /></div>
-
-                      </div>
-                    ))}
-                  </StyledSemester.Body>}
-
-              </div>
-            </div>
-          </div> : ''}
           <div style={{ width: '850px' }}>
-            <h1 style={{ display: 'flex' }}><span className="title">Danh sách phân công phản biện {tenHocKy}</span>
-              <button className="button-add-point" onClick={() => setShowPopup(true)}>Vào điểm</button></h1>
+            <h1 style={{ display: 'flex' }}><span className="title">Phản biện - {tenHocKy}</span></h1>
             {isLoading ? (
               <div>Loading</div>
             ) : (
               <StyledSemester.Body>
                 <div>
-                  {/* <StyledSemester.ButtonAdd className="bottom" >Thêm GV phản biện</StyledSemester.ButtonAdd> */}
-
+                <div className="download-file-council">
+                  <Button
+                    name={"Vào điểm"}
+                    background={"#f39c12"}
+                    color={"#ffffff"}
+                    className={"button-add-point-evaluationBoards-council"}
+                    onClick={() => setShowPopupChooseFilePoint(true)}
+                  />
+                  <Button
+                    name={"Xuất Excel"}
+                    background={"#1abc9c"}
+                    color={"#ffffff"}
+                    className={"download-file-council-button"}
+                    onClick={() => ExportFileCouncil()}
+                  />
+                </div>
                   <table style={changeVersion1 ? { display: "block" } : { display: "none" }}>
                     <thead>
                       <tr>
@@ -225,12 +289,12 @@ const AssignReviewer = () => {
                 <table>
                   <thead>
                     <tr>
-                      <th>Mã giảng viên phản biện</th>
-                      <th>Tên Giảng viên phản biện</th>
+                      <th>Mã giảng viên</th>
+                      <th>Tên Giảng viên</th>
                       <th>Mã đề tài</th>
                       <th>Tên đề tài</th>
                       <th>Điểm</th>
-                      <th>Note</th>
+                      <th>Ghi chú</th>
                       <th colspan="2">Hành động</th>
 
                     </tr>
@@ -245,7 +309,7 @@ const AssignReviewer = () => {
                         <td>{item.tenDeTai}</td>
                         <td>{item.diem}</td>
                         <td>{item.note}</td>
-                        <td><StyledSemester.ButtonAdd onClick={() => OnPutSemesters(item.idPhanBien, item)}>Sửa</StyledSemester.ButtonAdd></td>
+                        {/* <td><StyledSemester.ButtonAdd onClick={() => OnPutSemesters(item.idPhanBien, item)}>Sửa</StyledSemester.ButtonAdd></td> */}
                         <td><StyledSemester.Delete >Xóa</StyledSemester.Delete></td>
                       </tr>
                     ))}

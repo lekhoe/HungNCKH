@@ -1,0 +1,8 @@
+.button-common-item{
+    border: 0px;
+    height: 35px;
+    width: 100px;
+    border-radius: 8px;
+    cursor: pointer;
+    outline: none;
+}

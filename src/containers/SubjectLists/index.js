@@ -16,6 +16,8 @@ const SubjectList = () => {
   const [maMonHoc, setMaMonHoc] = useState("");
   const [tenMonHoc, setTenMonHoc] = useState("");
   const [nameMonTienQuyet, setNameMonTienQuyet] = useState("");
+  const [soLuongGVHD, setSoLuongGVHD] = useState(0);
+  const [soLuongPhanBien, setSoLuongPhanBien] = useState(0);
   const [typeApprover, setTypeApprover] = useState("0");
   const [changeVersion, setChangeVersion] = useState(true);
   const [subjectListSelecters, setSubjectListSelecters] = useState([]);
@@ -72,6 +74,8 @@ const SubjectList = () => {
       let body=
         {
           "idMonTienQuyet": idPrerequisite,
+          "soLuongGVHD": soLuongGVHD,
+          "soLuongPhanBien": soLuongPhanBien
         }
 
       axios.post(GET_API_STUDENTS_URL + `/MonHoc/${maMonHoc}/${tenMonHoc}/${idHocKy}/${typeApprover}`, body, GetToken()).then(response => { alert(response.data.message) })
@@ -113,7 +117,7 @@ const SubjectList = () => {
       <div className="Body">
         <div>
 
-          <h1>Danh sách Môn {tenHocKy}</h1>
+          <h1>Môn Học - {tenHocKy}</h1>
           <StyledSemester.Body>
 
             <StyledSemester.ButtonAdd onClick={() => onAdd()}>Thêm môn học</StyledSemester.ButtonAdd>
@@ -163,6 +167,38 @@ const SubjectList = () => {
                       </option>
                       <option value={2}>
                         Phản biện và hội đồng
+                      </option>
+                    </select>
+
+                    <label>Giảng viên phản biện</label>
+                    <select onChange={(val)=>setSoLuongPhanBien(val.target.value)}>
+                    <option value={0}>
+                        0
+                      </option>
+                      <option value={1}>
+                        1
+                      </option>
+                      <option value={2}>
+                        2
+                      </option>
+                      <option value={3}>
+                        3
+                      </option>
+                    </select>
+
+                    <label>Giảng viên hướng dẫn</label>
+                    <select onChange={(val)=>setSoLuongGVHD(val.target.value)}>
+                      <option value={0}>
+                        0
+                      </option>
+                      <option value={1}>
+                        1
+                      </option>
+                      <option value={2}>
+                        2
+                      </option>
+                      <option value={3}>
+                        3
                       </option>
                     </select>
                   </StyledSemester.DivLable>

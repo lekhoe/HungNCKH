@@ -1,0 +1,23 @@
+.button-common{
+    display: flex;
+}
+
+.save-studen .button-common .button-common-item{
+    margin-left: auto;
+    width: 150px;
+}
+
+.input-practice-unit{
+    border: 0;
+    outline: none;
+    height: 30px;
+    border-radius: 8px;
+}
+
+.input-practice-unit:hover{
+    background-color: #bdc3c7;
+}
+
+.input-practice-unit:focus{
+    border: 1px solid #000000;
+}

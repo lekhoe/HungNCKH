@@ -28,3 +28,17 @@
 .tutorial:hover{
     background-color: #2ecc71;
 }
+
+table, td, th {
+    border: 1px solid #7f8c8d;
+  }
+  
+  table{
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .table-list-topic{
+    height: 500px;
+    overflow: auto;
+}

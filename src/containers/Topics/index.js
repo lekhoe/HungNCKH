@@ -12,6 +12,10 @@ import { FcFolder } from 'react-icons/fc';
 import { Link } from 'react-router-dom';
 import axios from "axios";
 import GetToken from "../Login/getToken";
+import Modal from '../CommonComponent/Modal/Modal';
+import Button from '../CommonComponent/Button/Button';
+import { API_FILE, API_TOPIC } from '../../commonConstants/enpoint';
+import { ImFileExcel } from 'react-icons/im';
 
 const Topic = () => {
   let { idHocKy } = useParams();
@@ -23,50 +27,42 @@ const Topic = () => {
   const [showPopupAdd, setShowPopupAdd] = useState(false);
   const [showPopupEdit, setShowPopupEdit] = useState(false);
   const [showPopupInputPoint, setShowPopupInputPoint] = useState(false);
+  const [showPopupDelete, setShowPopupDelete] = useState(false);
+  const [showPopupDetail, setShowPopupDetail] = useState(false);
   const [idDeTai, setidDeTai] = useState('');
   const [maDeTai, setMaDeTai] = useState('');
   const [tenDeTai, setTenDeTai] = useState('');
   const [idStudent, setIdStudent] = useState('0');
   const [listStudent, setListStudent] = useState([]);
+  const [detailTopic, setDetailTopic] = useState([]);
   const [messRespon, setMessRespon] = useState('');
   const [point, setPoint] = useState('');
-
-
-
-  //-----------------------------------
-  // console.log("tên học kỳ" + tenHocKy);
+  const [showFile, setShowFile] = useState(false);
+  const [fileSelecter, setFileSelecter] = useState([]);
+  const [topicSelecter, setTopicSelecter] = useState([]);
 
   const dispatch = useDispatch();
-  const topicSelecter = useSelector((state) => state.reducerTopic.list);
+  // const topicSelecter = useSelector((state) => state.reducerTopic.list);
   // console.log("topicSelecter " + topicSelecter);
   let match = useRouteMatch();
   const [hide, setHide] = useState(false);
 
+  function CallApiGetListTopic() {
+    axios.get(API_TOPIC.GET_API_TOPIC_ALL.format(idHocKy, idMonHoc), GetToken()).then((response) => setTopicSelecter(response.data.data))
+  }
 
   useEffect(() => {
-    dispatch(getTopics(idHocKy, idMonHoc));
+    CallApiGetListTopic()
     axios.get(GET_API_STUDENTS_URL + `/SinhVien/SinhVienGetAll/${idHocKy}`, GetToken()).then(response => { setListStudent(response.data.data) });
   }, []);
+
+
 
   useEffect(() => {
     return () => {
       setHide(false);
     }
   }, [])
-
-  //----------------------
-  // console.log(match, " match");
-
-  //===========
-
-  const onHide = () => {
-    setHide1(true);
-
-
-  }
-  //setHide(false);
-
-
   //------------phân công phản biện-------------
   const [hide1, setHide1] = useState(true);
   const teacherSelecter = useSelector((state) => state.reducerListTeacherSemester.list);
@@ -89,8 +85,6 @@ const Topic = () => {
 
   //--- phân công hội đồng---------
   const [assign, setAssign] = useState(true);
-
-  const [showPopup, setShowPopup] = useState(false);
   const folderSelecter = useSelector((state) => state.reducerFolder.list);
   useEffect(() => {
     dispatch(getFolders());
@@ -102,6 +96,7 @@ const Topic = () => {
     setShowPopupAdd(false);
     setShowPopupEdit(false)
     setShowPopupInputPoint(false)
+    setShowPopupDelete(false)
   }
 
   function SaveTopic() {
@@ -113,13 +108,13 @@ const Topic = () => {
     }
     if (showPopupAdd) {
 
-      axios.post(GET_API_STUDENTS_URL + `/DeTai/InsertDeTai/${maDeTai}/${idHocKy}/${idMonHoc}/${idStudent}`, body, GetToken()).then(response => { alert(response.data.message) })
+      axios.post(GET_API_STUDENTS_URL + `/DeTai/InsertDeTai/${maDeTai}/${idHocKy}/${idMonHoc}/${idStudent}`, body, GetToken()).then(response => { alert(response.data.message) }).catch((err) => alert(err.response.data.message))
     }
     if (showPopupEdit) {
       axios.put(GET_API_STUDENTS_URL + `/DeTai/Update/${idDeTai}`, body, GetToken()).then(response => { alert(response.data.message) })
     }
     if (showPopupInputPoint) {
-      axios.put(GET_API_STUDENTS_URL + `/DeTai/UpdateDiemSX/${idDeTai}/${point}`,body, GetToken()).then(response => { alert(response.data.message) })
+      axios.put(GET_API_STUDENTS_URL + `/DeTai/UpdateDiemSX/${idDeTai}/${point}`, body, GetToken()).then(response => { alert(response.data.message) })
     }
     setShowPopupEdit(false)
     setShowPopupAdd(false)
@@ -144,184 +139,383 @@ const Topic = () => {
     setidDeTai(item.idDeTai)
   }
 
+  function ConsfirmDeleteTopic(item) {
+    setidDeTai(item.idDeTai)
+    setMaDeTai(item.maDeTai)
+    setShowPopupDelete(true)
+  }
+
+  function DeleteTopic() {
+    axios.delete(API_TOPIC.DELETE_API_TOPIC.format(idDeTai), GetToken()).then((response) => { alert(response.data.message) })
+    setShowPopupDelete(false)
+  }
+
+  function CallApiGetTeacherInTopic(item) {
+    axios.get(API_TOPIC.GET_API_TOPIC_DETAIL_LIST.format(item.idDeTai), GetToken()).then((response) => { setDetailTopic(response.data.data) })
+    setShowPopupDetail(true)
+  }
+  //setDetailTopic(response.data.data)
+  useEffect(() => {
+    console.log(detailTopic[0]?.chiTietDeTai[0])
+  }, [detailTopic]);
+  // const DetailTopic = (item) => {
+  //   setTenDeTai(item.tenDeTai)
+  //   setMaDeTai(item.maDeTai)
+  //   setShowPopupDetail(true)
+
+
+  // }
+
+  function callApiLoadFile(item) {
+    setShowFile(true);
+    try {
+      axios.get(API_FILE.GET_API_FILE_LIST.format(item.id), GetToken()).then(response => { setFileSelecter(JSON.parse(response.request.response)) })
+    } catch (error) { }
+
+  }
+
+  //download file
+  // fun someFunction = (idFile, fileUrl) => {
+
+  //   console.log("id ", idFile);
+
+  //   const method = `GET`;
+  //   const url = `https://api.quanlydoan.live/api/File/downloads/${idFile}`;
+
+  //   axios
+  //     .request({
+  //       url,
+  //       headers: {
+  //         'Authorization': 'Bearer ' + `${Cookies.get('token')}`,
+  //       },
+
+  //       method,
+
+  //       responseType: `blob`, //important
+  //     })
+  //     .then(({ data }) => {
+  //       const downloadUrl = window.URL.createObjectURL(new Blob([data]));
+  //       const link = document.createElement('a');
+  //       link.href = downloadUrl;
+  //       link.setAttribute('download', fileUrl); //any other extension
+  //       document.body.appendChild(link);
+  //       link.click();
+  //       link.remove();
+  //     });
+
+  // }
+
+  //Gọi api tính điểm cho đề tài
+  function CallApiScoring() {
+    axios.put(API_TOPIC.PUT_API_TOPIC_SCORING.format(idHocKy, idMonHoc), '', GetToken()).then((response) => { alert(response.data.message) }).catch((err) => { alert(err.response.data.message) })
+    setTimeout(function () { CallApiGetListTopic() }, 500);
+    
+  }
+
+
   return (
-    <StyledSemester.Flex>
-      <div><HeaderMonHoc /></div>
-      <div className="Body">
-        {showPopupAdd || showPopupEdit || showPopupInputPoint ? <div className="full-screen-popup">
-          <div className="popup">
-            <div className="popup-header">
-              <span className="label-header">Thêm đề tài</span>
-              <button className="close-popup" onClick={() => closePopup()}>x</button>
+    <>
+      {/* <Modal
+        show={showPopupChooseFilePoint}
+        title={"Tệp điểm"}
+        body={
+          !showFile ? [
+            <div className="list-folder">
+              {folderSelecter.map((item, index) => {
+                return (
+                  <div className="folder-choose-point" key={index} onClick={() => callApiLoadFile(item)}>
+                    <div className="folder-icon"><FcFolder /></div>
+                    <div className="name-folder">{item.folderName}</div>
+                  </div>
+                );
+              })}
             </div>
-            <div className="popup-content">
-              {/* <h1>Quản lý các Folder</h1> */}
-              <StyledSemester.Body>
-                <div className="container-add">
-                  {/* <div className="item">
-                    <div className="item-title">Mã đề tài</div>
-                    {!showPopupEdit && !showPopupInputPoint ?
-                      <input className="item-input" required type="text" placeholder="Mã đề tài" defaultValue={maDeTai} onChange={(val) => setMaDeTai(val.target.value)} />
-                      :
-                      <input className="item-input" required type="text" defaultValue={maDeTai} readOnly />}
-                  </div> */}
-                  <div className="item">
-                    <div className="item-title">Tên đề tài</div>
-                    {!showPopupInputPoint ?
-                      <input className="item-input" required type="text" placeholder="Tên đề tài" defaultValue={tenDeTai} onChange={(val) => setTenDeTai(val.target.value)} />
-                      :
-                      <input className="item-input" required type="text" placeholder="Tên đề tài" defaultValue={tenDeTai} readOnly />
-                    }
-
+          ] :
+            [
+              <div className="list-folder">
+                {fileSelecter?.map((item, index) => (
+                  <div className="folder-choose-point" key={index} onClick={() => ConfirmSaveFilePoint(item)}>
+                    <div className="folder-icon"><ImFileExcel /></div>
+                    <div className="name-folder">{item.fileName}</div>
                   </div>
-                  {!showPopupEdit && !showPopupInputPoint ? <select onChange={(val) => setIdStudent(val.target.value)} >
-                    <option value={'0'}>
-                      Chọn sinh viên - - -
-                    </option>,
-                    {listStudent?.map((item, index) => (
-                      <option value={item.idSinhVien}>
-                        {item.tenSinhVien} ({item.maSinhVien})
-                      </option>
-                    ))}
-                  </select> : <div className="item">
-                    <div className="item-title">Nhập điểm</div>
-                    {typeApprover == "GangVien" && !showPopupEdit ?
-                      <input className="item-input" required type="text" placeholder="Nhập điểm" defaultValue={point} onChange={(val) => setPoint(val.target.value)} />
-                      :
-                      <input className="item-input" required type="text" placeholder="Nhập điểm" defaultValue={point} readOnly />}
-
-                  </div>}
-                  <div className="item-submit">
-                    <button className="submit-form" disabled={maDeTai == '' || tenDeTai == '' || point == '' ? true : false} onClick={() => SaveTopic()}>Lưu</button>
-                  </div>
+                ))}
+              </div>]}
+        button={showFile ? [
+          <Button
+            name={"Folder"}
+            onClick={() => setShowFile(false)}
+          />
+        ] : ''}
+        onClickClose={()=> setShowPopupChooseFilePoint(false)}
+      />
+      <Modal
+        show={showPopupSaveFile}
+        mess={"Bạn có muốn nhập điểm từ file " + fileName +  " không?"}
+        button={[
+          <Button
+            name={"Hủy"}
+            onClick={()=>setShowPopupSaveFile(false)}
+          />,
+          <Button
+            name={"OK"}
+            background={'#3498db'}
+            color
+            onClick={()=>CallApiSaveFilePoint()}
+          />
+        ]}
+        onClickClose={()=>setShowPopupSaveFile(false)}
+      /> */}
+      <Modal
+        width={'1000px'}
+        show={showPopupDetail}
+        onClickClose={() => setShowPopupDetail(false)}
+        button={[
+          <Button
+            name={'Đóng'}
+            onClick={() => setShowPopupDetail(false)}
+          />
+        ]}
+        title={'Chi tiết đề tài:   ' + maDeTai}
+        body={[
+          <div className="council-content">
+            <div className="council-name">
+              <div className="council-name-title">
+                Tên đề tài:
+              </div>
+              <div className="council-name-detail">
+                {detailTopic[0]?.tenDeTai}
+              </div>
+            </div>
+            <div className="council-name">
+              <div className="council-name-title">
+                Tên môn học:
+              </div>
+              <div className="council-name-detail">
+                {detailTopic[0]?.tenMonHoc}
+              </div>
+            </div>
+            <div className="list-teacher-council">
+              <div className="list-teacher-council-header">
+                <div className="list-teacher-council-header-title">Giảng viên hướng dẫn</div>
+                <div className="list-teacher-council-header-button-add">
+                  {/* <Button
+                    name={'Thêm'}
+                    onClick={() => GetListPersonAddCouncil()}
+                  /> */}
                 </div>
-              </StyledSemester.Body>
+              </div>
+              <div className="list-teacher-council-content">
+                <div className="list-teacher-council-content-list">
+                  <table className="table-list" border='1px'>
+                    <thead>
+                      <tr>
+                        <th>Mã giảng viên</th>
+                        <th>Tên giảng viên</th>
+                        <th>Nhận xét</th>
+                        <th>Điểm số</th>
+                        {/* <th>Xóa</th> */}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {detailTopic[0]?.chiTietDeTai?.map((item, index) => (
 
+                        <tr key={index}>
+                          <td>{item.maGVHD}</td>
+                          <td>{item.tenGVHD}</td>
+                          <td>{item.nhanXet}</td>
+                          <td>{item.diemSo}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
-        </div> : ''}
-        <div>
+        ]}
+      />
+      <Modal
+        show={showPopupAdd || showPopupEdit || showPopupInputPoint || showPopupDelete}
+        title={showPopupAdd ? 'Thêm đề tài' : showPopupEdit ? 'Sửa đề tài' : showPopupDelete ? 'Thông báo' : 'Sửa điểm'}
+        body={[
+          showPopupDelete == false ? (<div className="container-add">
+            <div className="item">
+              <div className="item-title">Tên đề tài</div>
+              {!showPopupInputPoint ?
+                <input className="item-input" required type="text" placeholder="Tên đề tài" autoFocus={true} defaultValue={tenDeTai} onChange={(val) => setTenDeTai(val.target.value)} />
+                :
+                <input className="item-input" required type="text" placeholder="Tên đề tài" defaultValue={tenDeTai} readOnly />
+              }
 
-          <div style={hide ? { display: "block" } : { display: "none" }}>
-            {/* {topicSelecter?.map ((item, index ) => ( */}
-            {/* <Switch> */}
+            </div>
+            {!showPopupEdit && !showPopupInputPoint ? <select onChange={(val) => setIdStudent(val.target.value)} className="dropdown-choose-studen">
+              <option value={'0'}>
+                Chọn sinh viên - - -
+              </option>,
+              {listStudent?.map((item, index) => (
+                <option value={item.idSinhVien}>
+                  {item.tenSinhVien} ({item.maSinhVien})
+                </option>
+              ))}
+            </select> : <div className="item">
+              <div className="item-title">Nhập điểm</div>
+              {typeApprover == "GangVien" && !showPopupEdit ?
+                <input className="item-input" required type="text" placeholder="Nhập điểm" defaultValue={point} autoFocus={true} onChange={(val) => setPoint(val.target.value)} />
+                :
+                <input className="item-input" required type="text" placeholder="Nhập điểm" defaultValue={point} readOnly />}
 
-            {/* </Switch> */}
-            {/* ))} */}
-          </div>
-          <div >
-            <h1
-              style={{ display: 'flex', alignItems: 'center' }}>{hide ? "" : `Danh sách đề tài ${tenHocKy}`}
-              <button className="button-add" onClick={() => setShowPopupAdd(true)}>Thêm mới</button>
-              <button className="button-add-point" onClick={() => setShowPopup(true)}>Tính điểm</button>
-            </h1>
-            <StyledSemester.Body >
-              <table style={hide ? { display: "none" } : { display: "block" }}>
-                {/* style={hide ? {display: "none"} : {display: "block"}} */}
-                <thead>
-                  <tr>
-                    <th>Mã đề tài</th>
-                    <th>Tên đề tài</th>
-                    <th>Tên sinh viên</th>
-                    <th>Tên Học kỳ</th>
-                    <th>Tên Môn học</th>
-                    <th>Điểm trung bình</th>
-                    <th>Đạt</th>
-                    {/* <th style={typeApprover<2 ? {display: "none"} : {display: "block"}}>Phân công</th> */}
+            </div>}
+            {/* <div className="item-submit">
+            <button className="submit-form" disabled={ tenDeTai == '' ? true : false} onClick={() => SaveTopic()}>Lưu</button>
+          </div> */}
+          </div>) : (
+            <div className="container-add">Bạn có muốn xóa đề tài {maDeTai} ?</div>
+          )
+        ]}
+        onClickClose={() => closePopup()}
+        button={showPopupDelete == false ? [
+          <Button
+            name={'Lưu'}
+            onClick={() => SaveTopic()}
+            disabled={tenDeTai == '' ? true : false}
+          />] :
+          [
+            <Button
+              name={'Hủy'}
+              onClick={() => setShowPopupDelete(false)}
+            />,
+            <Button
+              name={'Xóa'}
+              background={'#e74c3c'}
+              color={'#ffffff'}
+              onClick={() => DeleteTopic()}
+            />
+          ]}
+      />
+      <StyledSemester.Flex>
+        <div><HeaderMonHoc /></div>
+        <div className="Body">
 
-                    <th colspan={typeApprover == "GangVien" ? "4" : "3"}>Hành động</th>
+          <div>
+            <div style={hide ? { display: "block" } : { display: "none" }}>
+            </div>
+            <div >
+              <h1
+                style={{ display: 'flex', alignItems: 'center' }}>{hide ? "" : `Đề tài - ${tenHocKy}`}
+                {/* <button className="button-add" onClick={() => setShowPopupAdd(true)}>Thêm mới</button>
+                <button className="button-add-point" onClick={() => setShowPopup(true)}>Tính điểm</button> */}
+              </h1>
+              <StyledSemester.Body >
+                <div className="download-file-council">
+                  <Button
+                    name={"Thêm mới"}
+                    background={"#3498db"}
+                    color={"#ffffff"}
+                    className={"button-add-council"}
+                    onClick={() => setShowPopupAdd(true)}
+                  />
+                  <Button
+                    name={"Tính điểm"}
+                    background={"#f39c12"}
+                    color={"#ffffff"}
+                    className={"button-add-point-evaluationBoards-council"}
+                    onClick={() => CallApiScoring()}
+                  /></div>
+                <table style={hide ? { display: "none" } : { display: "block" }}>
+                  <thead>
+                    <tr>
+                      <th>Mã đề tài</th>
+                      <th>Tên đề tài</th>
+                      <th>Tên sinh viên</th>
+                      <th>Tên Học kỳ</th>
+                      <th>Tên Môn học</th>
+                      <th>Điểm trung bình</th>
+                      {/* <th>Đạt</th> */}
+                      {/* <th style={typeApprover<2 ? {display: "none"} : {display: "block"}}>Phân công</th> */}
 
-                    {/* <th>Chi tiết đề tài</th> */}
-                  </tr>
-                </thead>
-                <tbody>
-                  {topicSelecter?.map((item, index) => (
+                      <th colspan={typeApprover == "GangVien" ? "4" : "3"}>Hành động</th>
 
-                    <tr key={index}>
-
-                      <td>{item.maDeTai}</td>
-                      <td>{item.tenDeTai}</td>
-                      <td>{item.tenSinhVien}</td>
-                      <td>{item.tenHocKy}</td>
-                      <td>{item.tenMonHoc}</td>
-                      <td>{item.diemTrungBinh}</td>
-                      <td>{item.isDat}</td>
-                      {/* <td style={typeApprover < 2 ? {display: "none"} : {display: "block"}}>
-                <StyledSemester.See  
-                onClick={()=> onShow(item)}>
-                  Phản biện
-                  </StyledSemester.See>
-
-                </td> */}
-                      {/* <td style={typeApprover < 1 ? {display: "none"} : {display: "block"}}>
-                <StyledSemester.See 
-                 onClick={()=> onShow1(item)}>
-                  Hội đồng</StyledSemester.See></td> */}
-                      {typeApprover == "GangVien" ? <td><StyledSemester.ButtonAdd onClick={() => InputPoint(item)}>Nhập điểm</StyledSemester.ButtonAdd></td> : ''}
-                      <td><StyledSemester.ButtonAdd onClick={() => EditTopic(item)}>Sửa</StyledSemester.ButtonAdd></td>
-                      <td><StyledSemester.Delete>Xóa</StyledSemester.Delete></td>
-                      <td><StyledSemester.See onClick={() => onHide()}><Link to={`/mon-hoc/${tenHocKy}/${idHocKy}/${tenMonHoc}/${idMonHoc}/${typeApprover}/chitiet/${item?.idDeTai}`}>Chi tiết ĐT</Link></StyledSemester.See></td>
-
-
+                      {/* <th>Chi tiết đề tài</th> */}
                     </tr>
+                  </thead>
+                  <tbody>
+                    {topicSelecter?.map((item, index) => (
 
-                  ))}
-                </tbody>
-              </table>
-              <StyledSemester.Popup id="hide" style={hide1 ? { display: "none" } : { display: "block" }} >
-                <StyledSemester.PopupContent>
-                  <div className="Divpopup">
-                    <StyledSemester.PopupTitle>
-                      <StyledSemester.Popuptext> Phân công giảng viên phản biện </StyledSemester.Popuptext>
-                      <StyledSemester.Close onClick={onHide}>&times;</StyledSemester.Close>
-                    </StyledSemester.PopupTitle>
-                    <div className="save">
-                      <StyledSemester.ButtonAdd>Lưu</StyledSemester.ButtonAdd>
-                    </div>
-                    <table className="table">
-                      <div className="scroll-table">
-                        <thead>
-                          <tr>
-                            <th>Mã Giảng viên</th>
-                            <th>Họ tên</th>
-                            <th>Đơn vị công tác</th>
-                            <th>Hòm thư</th>
-                            <th>Điện thoại</th>
-                            <th>Chọn</th>
+                      <tr key={index}>
 
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {teacherSelecter?.map((item, index) => (
-                            <tr key={index}>
-                              <td>{item.maGVHD}</td>
-                              <td>{item.tenGVHD}</td>
-                              <td>{item.donViCongTac}</td>
-                              <td>{item.email}</td>
-                              <td>{item.dienThoai}</td>
-                              <td><input
-                                type="checkbox"
-                                value={item.id}
-                                id="checkbox1"
-                                onChange={() => handleChange(item)}
-                              /></td>
-                            </tr>
-                          ))}
+                        <td>{item.maDeTai}</td>
+                        <td>{item.tenDeTai}</td>
+                        <td>{item.tenSinhVien}</td>
+                        <td>{item.tenHocKy}</td>
+                        <td>{item.tenMonHoc}</td>
+                        <td>{item.diemTrungBinh}</td>
+                        {/* <td>{item.isDat}</td> */}
+                        {typeApprover == "GangVien" ? <td><StyledSemester.ButtonAdd onClick={() => InputPoint(item)}>Nhập điểm</StyledSemester.ButtonAdd></td> : ''}
+                        <td><StyledSemester.ButtonAdd onClick={() => EditTopic(item)}>Sửa</StyledSemester.ButtonAdd></td>
+                        <td><StyledSemester.Delete onClick={() => ConsfirmDeleteTopic(item)}>Xóa</StyledSemester.Delete></td>
+                        <td><StyledSemester.See onClick={() => CallApiGetTeacherInTopic(item)}>Chi tiết</StyledSemester.See></td>
 
-                        </tbody>
+
+                      </tr>
+
+                    ))}
+                  </tbody>
+                </table>
+                <StyledSemester.Popup id="hide" style={hide1 ? { display: "none" } : { display: "block" }} >
+                  <StyledSemester.PopupContent>
+                    <div className="Divpopup">
+                      <StyledSemester.PopupTitle>
+                        <StyledSemester.Popuptext> Phân công giảng viên phản biện </StyledSemester.Popuptext>
+                        {/* <StyledSemester.Close onClick={DetailTopic}>&times;</StyledSemester.Close> */}
+                      </StyledSemester.PopupTitle>
+                      <div className="save">
+                        <StyledSemester.ButtonAdd>Lưu</StyledSemester.ButtonAdd>
                       </div>
-                    </table>
+                      <table className="table">
+                        <div className="scroll-table">
+                          <thead>
+                            <tr>
+                              <th>Mã Giảng viên</th>
+                              <th>Họ tên</th>
+                              <th>Đơn vị công tác</th>
+                              <th>Hòm thư</th>
+                              <th>Điện thoại</th>
+                              <th>Chọn</th>
 
-                  </div>
-                </StyledSemester.PopupContent>
-              </StyledSemester.Popup>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {teacherSelecter?.map((item, index) => (
+                              <tr key={index}>
+                                <td>{item.maGVHD}</td>
+                                <td>{item.tenGVHD}</td>
+                                <td>{item.donViCongTac}</td>
+                                <td>{item.email}</td>
+                                <td>{item.dienThoai}</td>
+                                <td><input
+                                  type="checkbox"
+                                  value={item.id}
+                                  id="checkbox1"
+                                  onChange={() => handleChange(item)}
+                                /></td>
+                              </tr>
+                            ))}
 
-            </StyledSemester.Body>
+                          </tbody>
+                        </div>
+                      </table>
+
+                    </div>
+                  </StyledSemester.PopupContent>
+                </StyledSemester.Popup>
+
+              </StyledSemester.Body>
+            </div>
+
           </div>
-
         </div>
-      </div>
-    </StyledSemester.Flex>
+      </StyledSemester.Flex>
+    </>
   );
 };
 

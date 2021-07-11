@@ -1,0 +1,6 @@
+.button-add-edit{
+    width: 220px;
+    display: flex;
+    margin: 0 auto 16px auto;
+    justify-content: space-between;
+}

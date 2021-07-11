@@ -36,7 +36,6 @@ export default function () {
       .catch((error) => {
         setUploadResponse("err: ", error);
       });
-    ////------------------------------------------------
 
   };
   ////-------------------dowload file chưa được
@@ -64,24 +63,24 @@ export default function () {
     //     // reject(err);
     //   });
     ///---cach dowload 2
-    axios.get('https://api.quanlydoan.live/api/File/downloadsDiemPhanBien/08b1918a-58ca-4eba-9ca8-8aa777e20920/c9fe75d5-58dd-430f-b82c-c3ed4673b7de'
-      , {
-        responseType: 'blob',
-        headers: {
-          //"content-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-          // "Accept": "application/json",
-          Authorization: 'Bearer ' + `${Cookies.get('token')}`
-        }
-      })
-      .then((response) => {
-        const blob = new Blob([response.data], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
-        const url = URL.createObjectURL(blob);
-        window.open(url);
+    // axios.get('https://api.quanlydoan.live/api/File/downloadsDiemPhanBien/08b1918a-58ca-4eba-9ca8-8aa777e20920/c9fe75d5-58dd-430f-b82c-c3ed4673b7de'
+    //   , {
+    //     responseType: 'blob',
+    //     headers: {
+    //       //"content-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    //       // "Accept": "application/json",
+    //       Authorization: 'Bearer ' + `${Cookies.get('token')}`
+    //     }
+    //   })
+    //   .then((response) => {
+    //     const blob = new Blob([response.data], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+    //     const url = URL.createObjectURL(blob);
+    //     window.open(url);
 
-      })
-      .catch((err) => {
-        //reject(err);
-      });
+    //   })
+    //   .catch((err) => {
+    //     //reject(err);
+    //   });
 
   }
 
@@ -95,9 +94,9 @@ export default function () {
         <input type="submit" />
       </form>
       <hr />
-      <button onClick={() => dowloadFile()}>
+      {/* <button onClick={() => dowloadFile()}>
         dowloadFile
-      </button>
+      </button> */}
     </div>
   );
 };

@@ -24,7 +24,7 @@ const App = () => {
 
     <Provider store={store}>
       <div className="app" >
-        <div style={{ margin: "0 3%", background: "#F8F8F8", paddingBottom: "100px", boxShadow: "60px 69px 60px #f0f0f0", }}>
+        <div style={{ margin: "0 3%", height: '100vh', background: "#F8F8F8" , boxShadow: "60px 69px 60px #f0f0f0", }}>
 
           <Router>
             <Banner />

@@ -11,6 +11,8 @@ import { StyledSemester } from "../Semesters/styled";
 import { getTeachers, getTeacherSuccess } from "./action";
 import ListTeacher from "../ListTeachers";
 import GetToken from '../Login/getToken';
+import { API_TEACHER } from "../../commonConstants/enpoint";
+import Button from '../CommonComponent/Button/Button';
 
 const Teacher = () => {
   const dispatch = useDispatch();
@@ -21,7 +23,7 @@ const Teacher = () => {
   const [dienThoai, setDienThoai] = useState("");
   const [listSelected, setListSelected] = useState([]);
   const GET_API_TEACHERS_URL = "http://localhost:8006/api/GiangVien/get-thongtin_giangvien";
-  const API_POST_TEACHERS_URL = "https://api.quanlydoan.live/api/api/GiangVienHuongDan";
+  const API_POST_TEACHERS_URL = "https://api.quanlydoan.live/api/GiangVienHuongDan";
 
 
 
@@ -46,36 +48,33 @@ const Teacher = () => {
   const [values, setValues] = useState([]);
 
   const handleChange = (selected) => {
-    // console.log(selected,'gv dc chon'); 
-    setListSelected([...listSelected, selected])
+    if (listSelected.find((item) => item.id == selected.id) != undefined) {
+      setListSelected(listSelected.filter((item) =>
+        item.id !== selected.id))
+    }
+    else {
+      setListSelected(listSelected.concat([selected]))
+    }
+    // if (listSelected.map((item) => {
+    //   return (
+    //     item.id
+    //   );
+    // }) != selected.id) {
+    //   debugger
+    //   setListSelected([...listSelected, selected])
+    // } else {
+    //   debugger
+    //   setListSelected(listSelected)
+    // }
   }
 
   useEffect(() => {
-    axios.get(GET_API_TEACHERS_URL + `/${idBoMonselect}`).then(response => { setTeacherSelecter(response.data.data) })
+    console.log(listSelected)
+  }, [listSelected]);
+
+  useEffect(() => {
+    axios.get(API_TEACHER.GET_API_TEACHER + `/${idBoMonselect}`).then(response => { setTeacherSelecter(response.data.data) })
   }, []);
-
-  // useEffect(() => {
-  //   console.log(listSelected)
-  // }, [listSelected]);
-
-
-  // console.log('value :', listSelected);
-
-  // const handleChangeCheck = (selected) => {
-
-  //   if (listIdDeTai.find((item) => item.idDeTai == selected.idDeTai) != undefined) {
-  //     setListIdDeTai(listIdDeTai.filter((item) =>
-  //       item.idDeTai !== selected.idDeTai))
-  //   }
-  //   else {
-  //     setListIdDeTai(listIdDeTai.concat([
-  //       {
-  //         "idDeTai": selected.idDeTai
-  //       }
-  //     ]))
-  //   }
-
-  // }
 
   function ChooseTeacher() {
     let body = [listSelected.map((item) => {
@@ -89,8 +88,8 @@ const Teacher = () => {
         "type": 1
       })
     })]
-    debugger
-    axios.post(API_POST_TEACHERS_URL + `/${idHocKy}`, body[0], GetToken()).then(response => { debugger })
+    console.log(body)
+    axios.post(API_TEACHER.INSERT_API_LIST_TEACHER + `/${idHocKy}`, body[0], GetToken()).then(response => { alert(response.data.message) })
   }
 
 
@@ -108,7 +107,14 @@ const Teacher = () => {
             ) : (
               <StyledSemester.Body>
                 <div className="luu">
-                  <StyledSemester.ButtonAdd onClick={() => ChooseTeacher()}>Lưu</StyledSemester.ButtonAdd>
+                  {/* <StyledSemester.ButtonAdd onClick={() => ChooseTeacher()}>Lưu</StyledSemester.ButtonAdd> */}
+                  <Button
+                    name={"Lưu"}
+                    background={'#2ecc71'}
+                    color={"#ffffff"}
+                    onClick={() => ChooseTeacher()}
+                    className={'save-studen-button'}
+                  />
                 </div>
                 <table>
                   <thead>
