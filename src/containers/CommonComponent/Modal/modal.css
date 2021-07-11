@@ -88,7 +88,7 @@
 }
 
 .popup-button{
-    padding: 0 16px;
+    /* padding: 0; */
     height: 50px;
     /* position: absolute; */
     /* bottom: 0; */
@@ -96,6 +96,7 @@
     align-items: center;
     margin: 0 auto;
     border-top: 1px solid #95a5a6;
+    justify-content: flex-end;
 }
 
 .popup-content-body{

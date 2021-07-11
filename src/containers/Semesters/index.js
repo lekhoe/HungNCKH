@@ -12,6 +12,7 @@ import { addSemester, deleteSemesters, getSemesters, putSemesters } from "./acti
 import { StyledSemester } from "./styled";
 import Button from '../CommonComponent/Button/Button';
 import './semesters.css'
+import Modal from "../CommonComponent/Modal/Modal";
 
 
 
@@ -27,34 +28,24 @@ const Semester = () => {
   const [tenHocKy, setTenHocKy] = useState("");
   const [changeVersion, setChangeVersion] = useState(true);
   const [changeVersion1, setChangeVersion1] = useState(false);
+  const [isShowPopupLookData, setIsShowPopupLookData] = useState(false);
+  const [semesterSelecter, setSemesterSelecter] = useState([]);
   const [semester, setSemester] = useState(1);
-  // const [ngayTao, setNgayTao] = useState("");
-  // const [ngayXoa, setNgayXoa] = useState(null);
-  // const [isActive, setIsActive] = useState(true);
-  // const [isDelete, setIsDelete] = useState(false);
-  //const [ngayTao, setNgayTao] = useState("");
-  // useState
 
-  const semesterSelecter = useSelector((state) => state.reducerSemester.list);
+  // const semesterSelecter = useSelector((state) => state.reducerSemester.list);
   const isLoading = useSelector((state) => state.reducerSemester.isLoading);
-  // console.log("semesterSelecter ", { semesterSelecter });
 
   useEffect(() => {
-    dispatch(getSemesters());
-
-  }, [isLoading]);
-
-  // const getSem = () =>{
-  //   dispatch(getSemesters());
-  // };
+    CallApiGetListSemester()
+  }, []);
 
   const onAdd = () => {
     setChangeVersion1(true);
 
   };
 
-  const getPro = () => {
-    dispatch(getSemesters());
+  function CallApiGetListSemester() {
+    axios.get(API_SEMESTER.GET_API_SEMESTER_LIST, GetToken()).then((response) => { setSemesterSelecter(response.data.data) })
   };
   // ----------------- Thêm ---------------------
 
@@ -122,85 +113,120 @@ const Semester = () => {
     dispatch(getSemesters());
   }
 
+  function ConfirmLookDataSemester(item) {
+    setIdHocky(item.idHocKy)
+    setIsShowPopupLookData(true)
+    setTenHocKy(item.tenHocKy)
+  }
+
+  function LookDataSemester() {
+    axios.put(API_SEMESTER.PUT_API_SEMESTER_LOOK.format(idHocKy, true), '', GetToken()).then((response) => { alert(response.data.message) })
+    setIsShowPopupLookData(false)
+    setTimeout(function () { CallApiGetListSemester(); }, 500);
+  }
+
   return (
-    <StyledSemester.Div>
-      <div>
-        <h1>Danh sách Học kỳ </h1>
-        {/* {isLoading ? (
-        <div>Loading</div>
-      ) : ( */}
-        <StyledSemester.Body>
-          <div>
-            <StyledSemester.ButtonAdd className="bottom" type="submit" onClick={() => onAdd()}>Thêm học kỳ</StyledSemester.ButtonAdd>
-            {/* ------popup------------------------------ */}
-            <StyledSemester.Popup style={changeVersion1 ? { display: "block" } : { display: "none" }}>
-              <StyledSemester.PopupContent1>
-                <StyledSemester.DivSpan>
-                  <span onClick={() => setChangeVersion1(false)}>&times;</span>
-                </StyledSemester.DivSpan>
-                <div className="popup-add-edit-semester">
-                  <h1 >{changeVersion ? "Thêm Học kỳ" : "Sửa học kỳ"}</h1>
-                  <label>Chọn học kỳ</label>
-                  <select className="choose-semester" onChange={(val) => setSemester(val.target.value)}>
-                    <option value="1">Kỳ 1</option>
-                    <option value="2">Kỳ 2</option>
-                    <option value="3">Kỳ 3</option>
-                  </select>
-                  <Button
-                    name={changeVersion ? "Thêm" : "Sửa"}
-                    onClick={() => SubmitSemester()}
-                    className="add-edit-semester-submit"
-                  />
-                  <button type="submit" onClick={() => setChangeVersion1(false)}>Hủy</button>
-                </div>
-              </StyledSemester.PopupContent1>
-            </StyledSemester.Popup>
-
-
-
-
+    <>
+      <Modal
+        show={isShowPopupLookData}
+        onClickClose={() => setIsShowPopupLookData(false)}
+        title={"Thông báo"}
+        button={[
+          <Button
+            name={"Hủy"}
+            onClick={() => setIsShowPopupLookData(false)}
+          // className="add-edit-semester-submit"
+          />,
+          <Button
+            name={"Look"}
+            background={"#3498db"}
+            onClick={() => LookDataSemester()}
+          // className="add-edit-semester-submit"
+          />
+        ]}
+        mess={"Bạn có muốn look data " + tenHocKy + " không?"}
+      />
+      <Modal
+        show={changeVersion1}
+        onClickClose={() => setChangeVersion1(false)}
+        title={"Khởi tạo học kỳ"}
+        button={[
+          <Button
+            name={"Hủy"}
+            onClick={() => setChangeVersion1(false)}
+            className="add-edit-semester-submit"
+          />,
+          <Button
+            name={"Thêm"}
+            background={"#3498db"}
+            onClick={() => SubmitSemester()}
+            className="add-edit-semester-submit"
+          />
+        ]}
+        body={[
+          <div className="add-semester">
+            <p>Chọn học kỳ</p>
+            <select className="choose-semester" onChange={(val) => setSemester(val.target.value)}>
+              <option value="1">Kỳ 1</option>
+              <option value="2">Kỳ 2</option>
+              <option value="3">Kỳ 3</option>
+            </select>
           </div>
-          <table>
-            <thead>
-              <tr>
-                <th>Xem</th>
-                <th>Mã học kỳ</th>
-                <th>Tên học kỳ</th>
+        ]}
+      />
+      <StyledSemester.Div>
+        <div>
+          <h1>Danh sách Học kỳ </h1>
+          <StyledSemester.Body>
+            <div>
+              <div className="list-semester-header">
+                <Button
+                  name={"Thêm học kỳ"}
+                  onClick={() => onAdd()}
+                  background={'#3498db'}
+                />
+              </div>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Xử lý</th>
+                  <th>Mã học kỳ</th>
+                  <th>Tên học kỳ</th>
+                  <th>Năm học</th>
+                  <th>Hành động</th>
+                </tr>
+              </thead>
+              <tbody>
+                {semesterSelecter.map((item, index) => {
+                  // console.log(item);
+                  return (
+                    <tr key={index}>
 
-                <th>Năm học</th>
-                <th colspan="2">Hành động</th>
+                      <td>
+                        {item.lockData ==true ? <Button name={"Xử lý"} background={"#1abc9c"} disabled={true}/> : <Link to={`/mon-hoc/${item?.tenHocKy}/${item?.idHocKy}`}>
+                          <Button name={"Xử lý"} background={"#1abc9c"} />
+                        </Link>}
+                        
+                      </td>
+                      <td>{item?.maHocKy ?? ''}</td>
+                      <td>{item?.tenHocKy ?? ''}</td>
 
+                      <td>2020-2021</td>
+                      {/* <td><StyledSemester.ButtonAdd onClick={() => OnPutSemesters(item.idHocKy, item)}>Sửa</StyledSemester.ButtonAdd></td> */}
+                      <td><Button onClick={() => ConfirmLookDataSemester(item)} name={"Khóa"} background={"#e74c3c"} disabled={item.lockData}/></td>
 
-              </tr>
-            </thead>
-            <tbody>
-              {semesterSelecter.map((item, index) => {
-                // console.log(item);
-                return (
-                  <tr key={index}>
-                    <Link to={`/mon-hoc/${item?.tenHocKy}/${item?.idHocKy}`}>
-                      <td><StyledSemester.See>Xem Thông tin</StyledSemester.See></td>
-                    </Link>
-                    <td>{item?.maHocKy ?? ''}</td>
-                    <td>{item?.tenHocKy ?? ''}</td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
 
-                    <td>2020-2021</td>
-                    <td><StyledSemester.ButtonAdd onClick={() => OnPutSemesters(item.idHocKy, item)}>Sửa</StyledSemester.ButtonAdd></td>
-                    <td><StyledSemester.Delete onClick={() => onDeleteSemesters(item.idHocKy)}>Xóa</StyledSemester.Delete></td>
-
-                  </tr>
-
-
-                )
-
-              })}
-            </tbody>
-          </table>
-
-        </StyledSemester.Body>
-        {/* )} */}
-      </div>
-    </StyledSemester.Div>
+          </StyledSemester.Body>
+          {/* )} */}
+        </div>
+      </StyledSemester.Div>
+    </>
   );
 };
 

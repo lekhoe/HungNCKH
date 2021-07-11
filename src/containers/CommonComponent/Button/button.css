@@ -1,8 +1,14 @@
 .button-common-item{
     border: 0px;
     height: 35px;
-    width: 100px;
+    min-width: 100px;
     border-radius: 8px;
     cursor: pointer;
     outline: none;
+    /* margin-right: 16px; */
+    margin-left: 16px;
+}
+
+.button-common{
+    padding: 16px 0;
 }

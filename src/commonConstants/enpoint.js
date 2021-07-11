@@ -2,7 +2,9 @@ const API_PROTOCOL_ON= 'https://api.quanlydoan.live/api/';
 const API_PROTOCOL_OFF= 'http://localhost:8006/api/';
 
 const API_SEMESTER={
-    INSERT_API_SEMESTER: API_PROTOCOL_ON +  `Hocky/InsertAsyncHocKy/{0}`
+    GET_API_SEMESTER_LIST: API_PROTOCOL_ON +  'Hocky/GetAllHocKy',
+    INSERT_API_SEMESTER: API_PROTOCOL_ON +  `Hocky/InsertAsyncHocKy/{0}`,
+    PUT_API_SEMESTER_LOOK: API_PROTOCOL_ON + 'HocKy/LockData/{0}/{1}'
 }
 
 const API_TEACHER={
@@ -55,12 +57,19 @@ const API_FOLDER={
 }
 
 const API_FEEDBACK={
-    // GET_API_COUNCIL_OF_SUBJECT: API_PROTOCOL_ON + 'HoiDongTotNghiep/GetAllHoiDong/{0}/{1}',
+    GET_API_FEEDBACK_LIST: API_PROTOCOL_ON + 'PhanBien/{0}',
     // GET_API_COUNCIL_DETAIL_LIST_PERSON: API_PROTOCOL_ON + `ChiTietHoiDong/GetAllThanhVien/{0}`,
     POST_API_FEEDBACK_LIST_TOPIC: API_PROTOCOL_ON + 'PhanBien/DeTaitoPhanBien/{0}/{1}/{2}',
     POST_API_FEEDBACK_POINT: API_PROTOCOL_ON + 'PhanBien/PhanBien/{0}',
-    // DELETE_API_COUNCIL_PERSON: API_PROTOCOL_ON + `ChiTietHoiDong/DeleteChiTietHoiDong/{0}`,
-    // POST_API_COUNCIL_POINT: API_PROTOCOL_ON + `HoiDongTotNghiep/DiemHoiDong/{0}/{1}`,
+    DELETE_API_FEEDBACK: API_PROTOCOL_ON + 'PhanBien/{0}/{1}/{2}',
+    PUT_API_COUNCIL_POINT: API_PROTOCOL_ON + 'PhanBien/UpdateDiemPhanBien/{0}/{1}',
+}
+
+const API_SUBJECT={
+    GET_API_SUBJECT_LIST: API_PROTOCOL_ON + 'MonHoc/{0}',
+    POST_API_SUBJECT: API_PROTOCOL_ON + 'MonHoc/{0}/{1}/{2}/{3}',
+    PUT_API_SUBJECT: API_PROTOCOL_ON + 'MonHoc/{0}/{1}/{2}/{3}/{4}',
+    DELETE_API_SUBJECT: API_PROTOCOL_ON + 'MonHoc/{0}',
 }
 export {
     API_SEMESTER,
@@ -70,5 +79,6 @@ export {
     API_TOPIC,
     API_FOLDER,
     API_FILE,
-    API_FEEDBACK
+    API_FEEDBACK,
+    API_SUBJECT
 }

@@ -1,3 +1,27 @@
-.popup-add-edit-semester{
-    
+.list-semester-header{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.choose-semester{
+    width: 100%;
+    height: 40px;
+    font-size: 18px;
+    outline: none;
+    padding: 0 8px;
+    border-radius:8px;
+width: 65%;
+margin-left: auto;
+}
+
+.add-semester{
+    display: flex;
+    /* height: ; */
+    margin-top: 24px;
+    align-items: center;
+}
+
+.add-semester p{
+    display: flex;
+    width: 30%;
 }

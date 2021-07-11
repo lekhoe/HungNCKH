@@ -32,7 +32,7 @@ const AssignReviewer = () => {
   const [maGVPB, setMaGVPB] = useState();
   const [tenGVPB, setTenGVPB] = useState();
   const [maDetai, setMaDetai] = useState();
-  const [diem, setDiem] = useState();
+  const [point, setPoint] = useState();
   const [note, setNote] = useState();
   const [changeVersion, setChangeVersion] = useState(true);
   const [changeVersion1, setChangeVersion1] = useState(false);
@@ -40,15 +40,17 @@ const AssignReviewer = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [showFile, setShowFile] = useState(false);
   const [showPopupSaveFile, setShowPopupSaveFile] = useState(false);
+  const [showPopupDeleteFeeback, setShowPopupDeleteFeeback] = useState(false);
   const [showPopupChooseFilePoint, setShowPopupChooseFilePoint] = useState(false);
   const [fileName, setFileName] = useState('');
   const [idFile, setIdFile] = useState('');
+  const [assignReviewerSelecter, setAssignReviewerSelecter] = useState([]);
 
   //-------------------sửa-----------------------------
   const OnPutSemesters = (idPhanBien, item) => {
     setChangeVersion1(true);
     setChangeVersion(false);
-    setIdPhanBien(idPhanBien);
+    // setIdPhanBien(idPhanBien);
     setMaGVPB(item.maGVPB);
 
 
@@ -59,13 +61,18 @@ const AssignReviewer = () => {
   const dispatch = useDispatch();
   const GET_API_FILE_URL = `https://api.quanlydoan.live/api/File/SearchAll/FolderName/`;
   const folderSelecter = useSelector((state) => state.reducerFolder.list);
-  const assignReviewerSelecter = useSelector((state) => state.reducerAssignReviewer.list);
+  // const assignReviewerSelecter = useSelector((state) => state.reducerAssignReviewer.list);
   const isLoading = useSelector((state) => state.reducerAssignReviewer.isLoading);
   // const fileSelecter = useSelector((state) => state.reducerFile.list);
 
   useEffect(() => {
-    dispatch(getAssignReviewers(idHocKy));
+    // dispatch(getAssignReviewers(idHocKy));
+    CallApiGetListAssign()
   }, []);
+
+  function CallApiGetListAssign() {
+    axios.get(API_FEEDBACK.GET_API_FEEDBACK_LIST.format(idHocKy), GetToken()).then((response) => { setAssignReviewerSelecter(response.data.data) })
+  }
 
   //----phân công đề tài--------------------------------
   const onShow = () => {
@@ -79,7 +86,7 @@ const AssignReviewer = () => {
   }, []);
   useEffect(() => {
     dispatch(getFolders());
-    
+
   }, []);
   const onHide = () => {
     setHide(true);
@@ -156,21 +163,62 @@ const AssignReviewer = () => {
   }
 
   //xác nhận file vào điểm
-  function ConfirmSaveFilePoint(item){
+  function ConfirmSaveFilePoint(item) {
     setFileName(item.fileName)
     setIdFile(item.idFile)
     setShowPopupSaveFile(true)
   }
 
-function CallApiSaveFilePoint(){
-  axios.post(API_FEEDBACK.POST_API_FEEDBACK_POINT.format(idFile), '', GetToken()).then((response)=>{alert(response.data.message)})
-  setShowPopupSaveFile(false)
-  setShowPopupChooseFilePoint(false)
-}
+  function CallApiSaveFilePoint() {
+    axios.post(API_FEEDBACK.POST_API_FEEDBACK_POINT.format(idFile), '', GetToken()).then((response) => { alert(response.data.message) })
+    setShowPopupSaveFile(false)
+    setShowPopupChooseFilePoint(false)
+  }
+
+  function InputUpdateFeedbackPoint(item) {
+    setIdPhanBien(item.idPhanBien)
+  }
+
+  function UpdatePointFeedback() {
+    let body = [{
+      "note": '',
+      "diem": point,
+    }]
+    axios.put(API_FEEDBACK.PUT_API_COUNCIL_POINT.format(idPhanBien), body, GetToken()).then(response => { console.log(response) })
+    setTimeout(function () { CallApiGetListAssign(); }, 500);
+  }
+
+  function ConfirmDeleteFeedback(item) {
+    if (item.diem == '') {
+      setMaGVPB(item.maGVPB)
+      setIdPhanBien(item.idPhanBien)
+      setShowPopupDeleteFeeback(true)
+    }
+  }
+
+  function DeleteFeedback() {
+    axios.delete(API_FEEDBACK.DELETE_API_FEEDBACK.format(idPhanBien, idHocKy, idMonHoc), GetToken()).then((response) => { alert(response.data.message) }).catch((err) => { alert(err.response.data.message) })
+    setTimeout(function () { CallApiGetListAssign(); }, 500);
+  }
 
   return (
     <>
-    <Modal
+      <Modal
+        show={showPopupDeleteFeeback}
+        mess={"Bạn có muốn xóa giảng viên phản biện " + maGVPB + " không?"}
+        button={[
+          <Button
+            name={"Hủy"}
+            onClick={() => { setShowPopupDeleteFeeback(false) }}
+          />,
+          <Button
+            name={"OK"}
+            onClick={() => DeleteFeedback()}
+          />
+        ]}
+        onClickClose={() => { setShowPopupDeleteFeeback(false) }}
+      />
+      <Modal
         show={showPopupChooseFilePoint}
         title={"Tệp điểm"}
         body={
@@ -201,24 +249,25 @@ function CallApiSaveFilePoint(){
             onClick={() => setShowFile(false)}
           />
         ] : ''}
-        onClickClose={()=> setShowPopupChooseFilePoint(false)}
+        onClickClose={() => setShowPopupChooseFilePoint(false)}
       />
       <Modal
         show={showPopupSaveFile}
-        mess={"Bạn có muốn nhập điểm từ file " + fileName +  " không?"}
+        mess={"Bạn có muốn nhập điểm từ file " + fileName + " không?"}
         button={[
           <Button
             name={"Hủy"}
-            onClick={()=>setShowPopupSaveFile(false)}
+            className={"button-input-point"}
+            onClick={() => setShowPopupSaveFile(false)}
           />,
           <Button
             name={"OK"}
             background={'#3498db'}
             color
-            onClick={()=>CallApiSaveFilePoint()}
+            onClick={() => CallApiSaveFilePoint()}
           />
         ]}
-        onClickClose={()=>setShowPopupSaveFile(false)}
+        onClickClose={() => setShowPopupSaveFile(false)}
       />
       <StyledSemester.Flex>
         <div><HeaderMonHoc /></div>
@@ -230,22 +279,22 @@ function CallApiSaveFilePoint(){
             ) : (
               <StyledSemester.Body>
                 <div>
-                <div className="download-file-council">
-                  <Button
-                    name={"Vào điểm"}
-                    background={"#f39c12"}
-                    color={"#ffffff"}
-                    className={"button-add-point-evaluationBoards-council"}
-                    onClick={() => setShowPopupChooseFilePoint(true)}
-                  />
-                  <Button
-                    name={"Xuất Excel"}
-                    background={"#1abc9c"}
-                    color={"#ffffff"}
-                    className={"download-file-council-button"}
-                    onClick={() => ExportFileCouncil()}
-                  />
-                </div>
+                  <div className="download-file-council">
+                    <Button
+                      name={"Vào điểm"}
+                      background={"#f39c12"}
+                      color={"#ffffff"}
+                      className={"button-add-point-evaluationBoards-council"}
+                      onClick={() => setShowPopupChooseFilePoint(true)}
+                    />
+                    <Button
+                      name={"Xuất Excel"}
+                      background={"#1abc9c"}
+                      color={"#ffffff"}
+                      className={"download-file-council-button"}
+                      onClick={() => ExportFileCouncil()}
+                    />
+                  </div>
                   <table style={changeVersion1 ? { display: "block" } : { display: "none" }}>
                     <thead>
                       <tr>
@@ -307,10 +356,14 @@ function CallApiSaveFilePoint(){
                         <td>{item.tenGVPB}</td>
                         <td>{item.maDeTai}</td>
                         <td>{item.tenDeTai}</td>
-                        <td>{item.diem}</td>
+                        <td><div onClick={() => InputUpdateFeedbackPoint(item)}><input className="input-point-feedback" onChange={(val) => setPoint(val.target.value)} onBlur={() => UpdatePointFeedback()} defaultValue={item.diem} value={index.point} /></div></td>
                         <td>{item.note}</td>
+
                         {/* <td><StyledSemester.ButtonAdd onClick={() => OnPutSemesters(item.idPhanBien, item)}>Sửa</StyledSemester.ButtonAdd></td> */}
-                        <td><StyledSemester.Delete >Xóa</StyledSemester.Delete></td>
+                        <td>{item.diem == '' ? <Button onClick={() => ConfirmDeleteFeedback(item)}
+                          name={"Xóa"}
+                          background={'#e74c3c'}
+                        /> : ''}</td>
                       </tr>
                     ))}
                   </tbody>
