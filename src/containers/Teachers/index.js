@@ -105,7 +105,7 @@ const Teacher = () => {
             {isLoading ? (
               <div>Loading</div>
             ) : (
-              <StyledSemester.Body>
+              <StyledSemester.Body style={{height: '470px', overflowY: "scroll"}}>
                 <div className="luu">
                   {/* <StyledSemester.ButtonAdd onClick={() => ChooseTeacher()}>Lưu</StyledSemester.ButtonAdd> */}
                   <Button

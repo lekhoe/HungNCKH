@@ -36,7 +36,7 @@ export const StyledSemester= {
             margin-bottom: 15px;
         }
         .Body{
-            width: 86%;
+            //width: 86%;
     display: flex;
     justify-content: center;
         }
@@ -48,6 +48,7 @@ export const StyledSemester= {
         border-radius: 5px;
     `,
     Body: styled.div`
+    
         .button-add{
             margin-left: auto;
     margin-right: 16px;

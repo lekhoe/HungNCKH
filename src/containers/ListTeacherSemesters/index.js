@@ -101,7 +101,7 @@ const ListTeacherSemester = () => {
       <div className="Body">
         <div>
           <h1>Giảng viên {tenHocKy}</h1>
-          <StyledSemester.Body>
+          <StyledSemester.Body style={{height: '470px', overflowY: "scroll"}}>
             <StyledSemester.ButtonAdd onClick={() => onAdd()}>Thêm giảng viên</StyledSemester.ButtonAdd>
             <StyledSemester.Popup style={hide ? { display: "block" } : { display: "none" }}>
               <StyledSemester.PopupContent1>

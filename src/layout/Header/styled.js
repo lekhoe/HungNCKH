@@ -12,17 +12,33 @@ export const StyledHeader= {
         
     `,
     MenuBody: styled.div `
+    height: 500px;
         display: block;
         color: #1E90FF;
         justify-content: center;
         //text-decoration: none;
        //width: 15%;
        margin-right: 30px;
-       width: 170px;
+       width: 190px;
        margin-top: 37px;
+       background: #DC4E41;
+       padding: 0 25px;
+       
+        
+    `,
+    MenuDiv: styled.div`
         
     `,
     Menu1: styled.div `
+    &:hover{
+        background: #43CD80;
+        .color{color: #FFFF00;}
+       }
+      
+    .color{
+        color: white;
+        font-weight: 500;
+    }
     
         width: 100%;
         height: 50px;

@@ -25,6 +25,7 @@ function Student() {
   let { idHocKy } = useParams();
   let { tenHocKy } = useParams();
   let { idMonHoc } = useParams();
+  let {typeApprover} = useParams();
 
   const dispatch = useDispatch();
 
@@ -220,7 +221,7 @@ function Student() {
               <div>Loading</div>
             ) : (
 
-              <StyledSemester.Body>
+              <StyledSemester.Body style={{height: '470px', overflowY: "scroll"}}>
 
                 <table>
                   <thead>
@@ -248,7 +249,7 @@ function Student() {
                           <button className="tutorial" onClick={() => { AssignInstructions(item) }}>Hướng dẫn</button>
                         </td>
                         <td>
-                          <StyledSemester.See onClick={() => { AssignFeedback(item) }}>
+                          <StyledSemester.See style={typeApprover == "GangVien" || typeApprover == "HoiDong" ? {display: "none"} : {display: "block"}} onClick={() => { AssignFeedback(item) }}>
                             Phản biện
                           </StyledSemester.See>
                         </td>

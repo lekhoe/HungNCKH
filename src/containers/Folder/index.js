@@ -71,7 +71,7 @@ const Folder = () => {
           </StyledSemester.Popup>
 
           <div>
-            <StyledSemester.ButtonAdd onClick={() => onAdd()}>Thêm Folder</StyledSemester.ButtonAdd>
+            <StyledSemester.See onClick={() => onAdd()}>Thêm Folder</StyledSemester.See>
             <h1>Quản lý các Folder</h1>
             <StyledSemester.Body>
               {folderSelecter.map((item, index) => {
