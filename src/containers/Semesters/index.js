@@ -175,7 +175,7 @@ const Semester = () => {
         ]}
       />
       <StyledSemester.Div>
-        <div>
+        <div style={{width:"100%"}}>
           <h1>Danh sách Học kỳ </h1>
           <StyledSemester.Body>
             <div>

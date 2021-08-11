@@ -262,7 +262,7 @@ const SubjectList = () => {
       <StyledSemester.Flex>
         <div><Headers /></div>
         <div className="Body">
-          <div>
+          <div className="BodyDiv">
 
             <h1>Môn Học - {tenHocKy}</h1>
             <StyledSemester.Body>

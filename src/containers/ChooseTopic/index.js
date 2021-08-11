@@ -215,7 +215,7 @@ function Student() {
       <StyledSemester.Flex>
         <div><HeaderMonHoc /></div>
         <div className="Body">
-          <div>
+          <div className="BodyDiv">
             <h1> Phân công đề tài cho giảng viên {tenHocKy}</h1>
             {isLoading ? (
               <div>Loading</div>

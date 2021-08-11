@@ -396,7 +396,7 @@ const Topic = () => {
         <div><HeaderMonHoc /></div>
         <div className="Body">
 
-          <div>
+          <div className="BodyDiv">
             <div style={hide ? { display: "block" } : { display: "none" }}>
             </div>
             <div >
@@ -421,7 +421,7 @@ const Topic = () => {
                     className={"button-add-point-evaluationBoards-council"}
                     onClick={() => CallApiScoring()}
                   /></div>
-                <table style={hide ? { display: "none" } : { display: "block" }}>
+                <table style={hide ? { display: "none" } : { display: "inline-table" }}>
                   <thead>
                     <tr>
                       <th>Mã đề tài</th>

@@ -99,7 +99,7 @@ const Teacher = () => {
       <StyledSemester.Flex>
         <div><Headers /></div>
         <div className="Body">
-          <div>
+          <div className="BodyDiv">
             <h1>Giảng viên hướng dẫn</h1>
 
             {isLoading ? (

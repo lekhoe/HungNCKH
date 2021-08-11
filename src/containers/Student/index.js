@@ -164,7 +164,7 @@ const StudentList = () => {
       <StyledSemester.Flex>
         <div><Headers /></div>
         <div className="Body">
-          <div>
+          <div className="BodyDiv">
 
             <h1>Danh sách Sinh viên</h1>
             <div className="save-studen">

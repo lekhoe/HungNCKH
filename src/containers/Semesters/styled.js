@@ -36,9 +36,12 @@ export const StyledSemester= {
             margin-bottom: 15px;
         }
         .Body{
-            //width: 86%;
+            width: 100%;
     display: flex;
     justify-content: center;
+        }
+        .BodyDiv{
+            width: 100%;
         }
     `,
     ButtonAdd: styled.button`
@@ -80,11 +83,11 @@ export const StyledSemester= {
         };
         table {
             border-collapse: collapse;
-            width: 100%;
+            width: 96%;
 
         }
         th, td {
-            padding: 15px 5px;
+            padding: 15px 0;
     }
     .luu{
         display: flex;
