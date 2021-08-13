@@ -16,6 +16,8 @@ import Modal from '../CommonComponent/Modal/Modal';
 import Button from '../CommonComponent/Button/Button';
 import { API_FILE, API_TOPIC } from '../../commonConstants/enpoint';
 import { ImFileExcel } from 'react-icons/im';
+import Cookies from 'js-cookie';
+
 
 const Topic = () => {
   let { idHocKy } = useParams();
@@ -24,6 +26,20 @@ const Topic = () => {
   let { idMonHoc } = useParams();
   let { typeApprover } = useParams();
   const GET_API_STUDENTS_URL = "https://api.quanlydoan.live/api"
+  //upload file ex
+  const fileSelecters = useSelector((state) => state.reducerFile.list);
+
+  
+  const [addFileEx, setAddFileEx]= useState(false);
+
+
+  const submitFileEx =(idFile) =>{
+
+    axios.post(GET_API_STUDENTS_URL + `/SinhVien/InsertExcel/${idFile}/${idHocKy}`,'', GetToken()).then(response => { alert(response.data.message+ "abc")}).catch(err => {alert(err.response.data.message)}) ;
+    setAddFileEx(false);
+
+  }
+//--------------------
   const [showPopupAdd, setShowPopupAdd] = useState(false);
   const [showPopupEdit, setShowPopupEdit] = useState(false);
   const [showPopupInputPoint, setShowPopupInputPoint] = useState(false);
@@ -97,6 +113,7 @@ const Topic = () => {
     setShowPopupEdit(false)
     setShowPopupInputPoint(false)
     setShowPopupDelete(false)
+    
   }
 
   function SaveTopic() {
@@ -215,56 +232,7 @@ const Topic = () => {
 
   return (
     <>
-      {/* <Modal
-        show={showPopupChooseFilePoint}
-        title={"Tệp điểm"}
-        body={
-          !showFile ? [
-            <div className="list-folder">
-              {folderSelecter.map((item, index) => {
-                return (
-                  <div className="folder-choose-point" key={index} onClick={() => callApiLoadFile(item)}>
-                    <div className="folder-icon"><FcFolder /></div>
-                    <div className="name-folder">{item.folderName}</div>
-                  </div>
-                );
-              })}
-            </div>
-          ] :
-            [
-              <div className="list-folder">
-                {fileSelecter?.map((item, index) => (
-                  <div className="folder-choose-point" key={index} onClick={() => ConfirmSaveFilePoint(item)}>
-                    <div className="folder-icon"><ImFileExcel /></div>
-                    <div className="name-folder">{item.fileName}</div>
-                  </div>
-                ))}
-              </div>]}
-        button={showFile ? [
-          <Button
-            name={"Folder"}
-            onClick={() => setShowFile(false)}
-          />
-        ] : ''}
-        onClickClose={()=> setShowPopupChooseFilePoint(false)}
-      />
-      <Modal
-        show={showPopupSaveFile}
-        mess={"Bạn có muốn nhập điểm từ file " + fileName +  " không?"}
-        button={[
-          <Button
-            name={"Hủy"}
-            onClick={()=>setShowPopupSaveFile(false)}
-          />,
-          <Button
-            name={"OK"}
-            background={'#3498db'}
-            color
-            onClick={()=>CallApiSaveFilePoint()}
-          />
-        ]}
-        onClickClose={()=>setShowPopupSaveFile(false)}
-      /> */}
+      
       <Modal
         width={'1000px'}
         show={showPopupDetail}
@@ -333,6 +301,34 @@ const Topic = () => {
             </div>
           </div>
         ]}
+      />
+      <Modal 
+      show={addFileEx}
+      onClickClose={() => setAddFileEx(false)}
+      title={'Thêm File Excel'}
+      body={[
+        <div>
+        {/* <form onSubmit={submitForm}>
+        <br />
+        <input type="file" onChange={(e) => setUploadFile(e.target.files[0])} />
+        <br />
+        <input type="submit" />
+      </form> */}
+
+{fileSelecters?.map ((item, index ) => (
+                        <StyledSemester.Flex>
+                        <div className="bodyFile" key={index} onClick={()=>submitFileEx(item.idFile)}>
+                            <div className="iconFile"><ImFileExcel /></div>
+                    <div className="nameFile">{item.fileName}</div>
+                    
+                   
+
+                    </div>
+                    </StyledSemester.Flex>
+       ))}
+      </div>
+     
+      ]}
       />
       <Modal
         show={showPopupAdd || showPopupEdit || showPopupInputPoint || showPopupDelete}
@@ -413,6 +409,13 @@ const Topic = () => {
                     color={"#ffffff"}
                     className={"button-add-council"}
                     onClick={() => setShowPopupAdd(true)}
+                  />
+                  <Button
+                    name={"Thêm mới bằng file excel"}
+                    background={"#3498db"}
+                    color={"#ffffff"}
+                    className={"button-add-council"}
+                    onClick={() => setAddFileEx(true)}
                   />
                   <Button
                     name={"Tính điểm"}

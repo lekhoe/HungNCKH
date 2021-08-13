@@ -34,6 +34,7 @@ export const StyledSemester= {
         .bodyFile{
             display: flex;
             margin-bottom: 15px;
+            cursor: pointer;
         }
         .Body{
             width: 100%;

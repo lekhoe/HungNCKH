@@ -12,13 +12,13 @@ export function* sagaGetTopics (idHocKy) {
     //console.log("URL ", GET_API_TOPICS_URL);
     let idhocky= idHocKy.payload.idHocKy;
     let idmonhoc=idHocKy.payload.idMonHoc;
-    console.log("idHocky+ idMonHoc " +  idHocKy.payload.idHocKy, {idhocky},JSON.stringify(idHocKy.payload.idMonHoc));
+   // console.log("idHocky+ idMonHoc " +  idHocKy.payload.idHocKy, {idhocky},JSON.stringify(idHocKy.payload.idMonHoc));
     try{
         const reponse = yield axios.get(`${GET_API_TOPICS_URL}${idhocky}/${idmonhoc}`,GetToken());
-        console.log("reponse ", reponse);
-        console.log(reponse.statusCode);
+        //console.log("reponse ", reponse);
+        //console.log(reponse.statusCode);
         if (reponse) {
-            console.log("chạy vào đây");
+            //console.log("chạy vào đây");
             yield put(getTopicSuccess(reponse));
         }
         
