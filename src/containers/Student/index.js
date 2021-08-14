@@ -10,6 +10,10 @@ import { StyledSemester } from '../Semesters/styled';
 import { getStudentLocals, getStudents } from './action';
 import './student.css';
 import Button from '../CommonComponent/Button/Button';
+import Modal from '../CommonComponent/Modal/Modal';
+import { FcFolder } from 'react-icons/fc';
+import { ImFileExcel } from 'react-icons/im';
+
 
 const StudentList = () => {
   const [idSinhVien, setIdSinhVien] = useState("");
@@ -23,6 +27,7 @@ const StudentList = () => {
   const [studentListSelecter1, setStudentListSelecter1] = useState([]);
   const [listSelected, setListSelected] = useState([]);
   const [hide, setHide] = useState(true);
+  const [addFileEx, setAddFileEx]= useState(false);
 
   const dispatch = useDispatch();
 
@@ -45,7 +50,29 @@ const StudentList = () => {
   useEffect(() => {
     dispatch(getStudentLocals(idBoMonselect));
   }, []);
+  console.log(idBoMonselect);
   // const StudentListSelecter1 = useSelector((state) => state.reducerStudentList.list1);
+ // Thêm mới bằng file ex
+ const GET_API_FILE_URL = `https://api.quanlydoan.live/api/File/SearchAll/FolderName/`;
+ const [fileSelecter, setFileSelecter] = useState([]);
+ const [showFile, setShowFile] = useState(false);
+ const [fileName, setFileName] = useState('');
+ const [idFile, setIdFile] = useState('');
+ const [showPopupSaveFile, setShowPopupSaveFile] = useState(false);
+ const folderSelecter = useSelector((state) => state.reducerFolder.list);
+
+ function callApiLoadFile(item) {
+  //setShowFile(true);
+  try {
+    axios.get(`${GET_API_FILE_URL}${item.id}`, GetToken()).then(response => { setFileSelecter(JSON.parse(response.request.response)) })
+  } catch (error) { }
+
+}
+function ConfirmSaveFilePoint(item) {
+  setFileName(item.fileName)
+  setIdFile(item.idFile)
+  setShowPopupSaveFile(true)
+}
 
   //Call api
   useEffect(() => {
@@ -108,6 +135,70 @@ const StudentList = () => {
   }
   return (
     < >
+    <Modal
+        show={addFileEx}
+        onClickClose={() => setAddFileEx(false)}
+        title={'Thêm File Excel'}
+        body={
+          !showFile ?[
+            <div className="list-folder">
+              {folderSelecter.map((item, index) => {
+               return (
+                   <div className="folder-choose-point" key={index} onClick={() => callApiLoadFile(item)}>
+                     <div className="folder-icon"><FcFolder /></div>
+                    <div className="name-folder">{item.folderName}</div>
+                   </div>
+                 );
+               })}
+             </div>
+          ] :
+            [
+              <div className="list-folder">
+                {fileSelecter?.map((item, index) => (
+                  <div className="folder-choose-point" key={index} onClick={() => ConfirmSaveFilePoint(item)}>
+                    <div className="folder-icon"><ImFileExcel /></div>
+                    <div className="name-folder">{item.fileName}</div>
+                  </div>
+                ))}
+              </div>]}
+        button={showFile ? [
+          <Button
+            name={"Folder"}
+            onClick={() => setShowFile(false)}
+          />
+        ] : ''}
+        // onClickClose={() => setShowPopupChooseFilePoint(false)}
+      />
+    <Modal 
+      // show={addFileEx}
+      // onClickClose={() => setAddFileEx(false)}
+      // title={'Thêm File Excel'}
+      body={[
+        <div>
+        {/* <form onSubmit={submitForm}>
+        <br />
+        <input type="file" onChange={(e) => setUploadFile(e.target.files[0])} />
+        <br />
+        <input type="submit" />
+      </form> */}
+
+{/* {fileSelecters?.map ((item, index ) => (
+                        <StyledSemester.Flex>
+                        <div className="bodyFile" key={index} onClick={()=>submitFileEx(item.idFile)}>
+                            <div className="iconFile"><ImFileExcel /></div>
+                    <div className="nameFile">{item.fileName}</div>
+                    
+                   
+
+                    </div>
+                    </StyledSemester.Flex>
+       ))} */}
+
+       
+      </div>
+     
+      ]}
+      /> 
       <StyledSemester.Popup id="hide" style={hide ? { display: "none" } : { display: "block" }} >
         <StyledSemester.PopupContent>
           <div className="Divpopup">
@@ -123,6 +214,7 @@ const StudentList = () => {
                 onClick={() => { ChooseStudent() }}
                 className={'save-studen-button'}
               />
+              
             </div>
             <table>
               <thead>
@@ -169,6 +261,7 @@ const StudentList = () => {
             <h1>Danh sách Sinh viên</h1>
             <div className="save-studen">
               {/* <button className="button-save-student" onClick={() => ChooseStudent()}>Lưu</button> */}
+              <StyledSemester.KC>
               <Button
                 name={"Thêm sinh viên"}
                 background={'#2ecc71'}
@@ -176,7 +269,17 @@ const StudentList = () => {
                 onClick={() => setHide(false)}
                 className={'save-studen-button'}
               />
+              
+              <Button
+                    name={"Thêm bằng file excel"}
+                    background={"#3498db"}
+                    color={"#ffffff"}
+                    className={"button-add-council"}
+                    onClick={() => setAddFileEx(true)}
+                  />
+                  </StyledSemester.KC>
             </div>
+            
             <StyledSemester.Body style={{height: '470px', overflowY: "scroll"}}>
               {/* <StyledSemester.ButtonAdd  onClick={()=> onShow()}>Thêm sinh viên</StyledSemester.ButtonAdd> */}
               <table>

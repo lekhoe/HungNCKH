@@ -48,58 +48,58 @@ const App = () => {
 
 
                   {/* --------------------------------- */}
-                  <Route exact path={`/mon-hoc/:tenHocKy/:idHocKy`}>
+                  <Route exact path={`/mon-hoc/:tenHocKy/:idHocKy/:idBoMon`}>
 
                     <SubjectList />
                   </Route>
 
 
-                  <Route exact path={`/mon-hoc/:tenHocKy/:idHocKy/mon-hoc`}>
+                  <Route exact path={`/mon-hoc/:tenHocKy/:idHocKy/:idBoMon/mon-hoc`}>
                     <SubjectList />
 
                   </Route>
-                  <Route exact path={`/mon-hoc/:tenHocKy/:idHocKy/chon-giang-vien`}>
+                  <Route exact path={`/mon-hoc/:tenHocKy/:idHocKy/:idBoMon/chon-giang-vien`}>
                     <Teacher />
 
                   </Route>
-                  <Route exact path={`/mon-hoc/:tenHocKy/:idHocKy/danh-sach-gvhd`}>
+                  <Route exact path={`/mon-hoc/:tenHocKy/:idHocKy/:idBoMon/danh-sach-gvhd`}>
                     <ListTeacherSemester />
 
                   </Route>
-                  <Route exact path={`/mon-hoc/:tenHocKy/:idHocKy/danh-sach-sinhvien`}>
+                  <Route exact path={`/mon-hoc/:tenHocKy/:idHocKy/:idBoMon/danh-sach-sinhvien`}>
                     <StudentList />
 
                   </Route>
 
 
-                  <Route exact path={`/mon-hoc/:tenHocKy/:idHocKy/:tenMonHoc/:idMonHoc/:typeApprover`}>
+                  <Route exact path={`/mon-hoc/:tenHocKy/:idHocKy/:idBoMon/:tenMonHoc/:idMonHoc/:typeApprover`}>
                     <Topic />
                   </Route>
 
-                  <Route exact path={`/mon-hoc/:tenHocKy/:idHocKy/:tenMonHoc/:idMonHoc/:typeApprover/chitiet/:idDeTai`}>
+                  <Route exact path={`/mon-hoc/:tenHocKy/:idHocKy/:idBoMon/:tenMonHoc/:idMonHoc/:typeApprover/chitiet/:idDeTai`}>
                     <TopicDetail />
                   </Route>
 
-                  <Route exact path={`/mon-hoc/:tenHocKy/:idHocKy/:tenMonHoc/:idMonHoc/:typeApprover/danh-sach-de-tai`}>
+                  <Route exact path={`/mon-hoc/:tenHocKy/:idHocKy/:idBoMon/:tenMonHoc/:idMonHoc/:typeApprover/danh-sach-de-tai`}>
                     <Topic />
                   </Route>
-                  <Route exact path={`/mon-hoc/:tenHocKy/:idHocKy/:tenMonHoc/:idMonHoc/:typeApprover/chon-de-tai-cho-GV`}>
+                  <Route exact path={`/mon-hoc/:tenHocKy/:idHocKy/:idBoMon/:tenMonHoc/:idMonHoc/:typeApprover/chon-de-tai-cho-GV`}>
                     <Student />
                   </Route>
-                  <Route exact path={`/mon-hoc/:tenHocKy/:idHocKy/:tenMonHoc/:idMonHoc/:typeApprover/phan-cong-phan-bien`}>
+                  <Route exact path={`/mon-hoc/:tenHocKy/:idHocKy/:idBoMon/:tenMonHoc/:idMonHoc/:typeApprover/phan-cong-phan-bien`}>
                     <AssignReviewerChoose />
                   </Route>
-                  <Route exact path={`/mon-hoc/:tenHocKy/:idHocKy/:tenMonHoc/:idMonHoc/:typeApprover/phan-bien`}>
+                  <Route exact path={`/mon-hoc/:tenHocKy/:idHocKy/:idBoMon/:tenMonHoc/:idMonHoc/:typeApprover/phan-bien`}>
                     <AssignReviewer />
                   </Route>
-                  <Route exact path={`/mon-hoc/:tenHocKy/:idHocKy/:tenMonHoc/:idMonHoc/:typeApprover/hoi-dong-tot-nghiep`}>
+                  <Route exact path={`/mon-hoc/:tenHocKy/:idHocKy/:idBoMon/:tenMonHoc/:idMonHoc/:typeApprover/hoi-dong-tot-nghiep`}>
                     <EvaluationBoard />
                   </Route>
 
-                  <Route exact path={`/mon-hoc/:tenHocKy/:idHocKy/:tenMonHoc/:idMonHoc/:typeApprover/quan-ly-folder`}>
+                  <Route exact path={`/mon-hoc/:tenHocKy/:idHocKy/:idBoMon/:tenMonHoc/:idMonHoc/:typeApprover/quan-ly-folder`}>
                     <Folder />
                   </Route>
-                  <Route exact path={`/mon-hoc/:tenHocKy/:idHocKy/:tenMonHoc/:idMonHoc/:typeApprover/quan-ly-folder/file/:id`}>
+                  <Route exact path={`/mon-hoc/:tenHocKy/:idHocKy/:idBoMon/:tenMonHoc/:idMonHoc/:typeApprover/quan-ly-folder/file/:id`}>
                     <File />
                   </Route>
 

@@ -26,7 +26,7 @@ const Teacher = () => {
   const API_POST_TEACHERS_URL = "https://api.quanlydoan.live/api/GiangVienHuongDan";
 
 
-
+  let {idBoMon} =useParams();
   // const teacherSelecter = useSelector((state) => console.log("khỏe lê", state));
   const [teacherSelecter, setTeacherSelecter] = useState([]);
 
@@ -75,7 +75,7 @@ const Teacher = () => {
   useEffect(() => {
     axios.get(API_TEACHER.GET_API_TEACHER + `/${idBoMonselect}`).then(response => { setTeacherSelecter(response.data.data) })
   }, []);
-
+console.log("idBoMonselect "+ idBoMonselect);
   function ChooseTeacher() {
     let body = [listSelected.map((item) => {
       return ({

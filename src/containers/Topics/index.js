@@ -25,14 +25,17 @@ const Topic = () => {
   let { tenMonHoc } = useParams();
   let { idMonHoc } = useParams();
   let { typeApprover } = useParams();
+  let {idBoMon} =useParams();
   const GET_API_STUDENTS_URL = "https://api.quanlydoan.live/api"
   //upload file ex
   const fileSelecters = useSelector((state) => state.reducerFile.list);
 
-  
+  //const [fileSelecters, setFileSelecters] = useState([]);
   const [addFileEx, setAddFileEx]= useState(false);
 
-
+  // function CallApiGetListSemester() {
+  //   axios.get(GET_API_STUDENTS_URL + ``, GetToken()).then((response) => { setSemesterSelecter(response.data.data) })
+  // };
   const submitFileEx =(idFile) =>{
 
     axios.post(GET_API_STUDENTS_URL + `/SinhVien/InsertExcel/${idFile}/${idHocKy}`,'', GetToken()).then(response => { alert(response.data.message+ "abc")}).catch(err => {alert(err.response.data.message)}) ;

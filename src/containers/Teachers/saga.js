@@ -7,6 +7,7 @@ const GET_API_TEACHERS_URL= "http://localhost:8006/api/GiangVien/get-thongtin_gi
 
 
 export function* sagaGetTeachers (idBoMon) {
+    //console.log("idBoMon "+idBoMon);
     try{
         
         const reponse = yield axios.get(GET_API_TEACHERS_URL + `/${idBoMon}`);

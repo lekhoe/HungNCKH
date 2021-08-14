@@ -272,7 +272,7 @@ const AssignReviewer = () => {
       <StyledSemester.Flex>
         <div><HeaderMonHoc /></div>
         <div className="Body">
-          <div style={{ width: '850px' }}>
+          <div  className="BodyDiv">
             <h1 style={{ display: 'flex' }}><span className="title">Phản biện - {tenHocKy}</span></h1>
             {isLoading ? (
               <div>Loading</div>

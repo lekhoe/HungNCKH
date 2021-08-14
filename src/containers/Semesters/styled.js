@@ -40,10 +40,17 @@ export const StyledSemester= {
             width: 100%;
     display: flex;
     justify-content: center;
+    margin-right: 20px;
         }
         .BodyDiv{
             width: 100%;
         }
+    `,
+    KC: styled.div`
+    display: flex;
+    .save-studen-button{
+        margin-right: 20px;
+    }
     `,
     ButtonAdd: styled.button`
         background: #66CDAA;
@@ -84,7 +91,7 @@ export const StyledSemester= {
         };
         table {
             border-collapse: collapse;
-            width: 96%;
+            width: 100%;
 
         }
         th, td {
@@ -153,7 +160,7 @@ export const StyledSemester= {
   to {top:0; opacity:1}
 }
 table {
-    padding: 20px;
+    //padding: 20px;
 }
 
 

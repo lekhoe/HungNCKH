@@ -37,6 +37,7 @@ const SubjectList = () => {
   // console.log(test);
   let { idHocKy } = useParams();
   let { tenHocKy } = useParams();
+  let {idBoMon} =useParams();
   //console.log("tên học kỳ" + tenHocKy);
   // console.log(idHocKy);
   // console.log(tenHocKy);
@@ -76,7 +77,11 @@ const SubjectList = () => {
 
   //-------------------sửa-----------------
   const onAddSubmit = () => {
-    if (maMonHoc && tenMonHoc) {
+      console.log("typeApprover "+typeApprover);
+    if (maMonHoc && tenMonHoc ) {
+      if(typeApprover==null){
+        
+      
       if (changeVersion) {
         let body =
         {
@@ -97,6 +102,8 @@ const SubjectList = () => {
         }
         axios.put(API_SUBJECT.PUT_API_SUBJECT.format(maMonHoc, idHocKy, tenMonHoc, idMonHoc, typeApprover), bodyEdit, GetToken()).then(response => { alert(response.data.message) })
         setTimeout(function () { CallGetListSubject() }, 500);
+      }}else{
+        alert("Bạn chưa chọn cấp độ đánh giá");
       }
     } else {
       alert("vui lòng nhập thông tin");
@@ -207,12 +214,16 @@ const SubjectList = () => {
             <div className="item">
               <p>Cấp độ đánh giá</p>
               <select onChange={(val) => setTypeApprover(val.target.value)} defaultValue={typeApprover}>
-                <option value={0}>
+              <option value={3}>
+                  Chọn cấp độ đánh giá
+                </option>
+              <option value={0}>
                   Giảng viên hướng dẫn
                 </option>
                 <option value={1}>
                   Hội đồng
                 </option>
+               
                 <option value={2}>
                   Phản biện và hội đồng
                 </option>
@@ -374,7 +385,7 @@ const SubjectList = () => {
                 <tbody>
                   {subjectListSelecter?.map((item, index) => (
                     <tr key={index}>
-                      <Link to={`/mon-hoc/${tenHocKy}/${idHocKy}/${item.tenMonHoc}/${item.idMonHoc}/${item.typeApprover}`}>
+                      <Link to={`/mon-hoc/${tenHocKy}/${idHocKy}/${idBoMon}/${item.tenMonHoc}/${item.idMonHoc}/${item.typeApprover}`}>
                         <td><StyledSemester.See>Xử lý thông tin</StyledSemester.See></td>
                       </Link>
                       <td>{item.maMonHoc}</td>

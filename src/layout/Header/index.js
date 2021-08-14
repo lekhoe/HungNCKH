@@ -12,6 +12,7 @@ const Headers = () => {
   console.log("match.url ",match.url);
   let { idHocKy } = useParams();
   let {tenHocKy} = useParams();
+  let {idBoMon} =useParams();
   //console.log("tên học kỳ" + tenHocKy);
   console.log(idHocKy);
   console.log(tenHocKy);
@@ -39,10 +40,10 @@ const Headers = () => {
       <StyledHeader.MenuBody>
       <StyledHeader.MenuDiv>
         <StyledHeader.Menu1><Link className="color" to='/hoc-ky'><FcPrevious /><span>Học Kỳ</span></Link></StyledHeader.Menu1>  
-        <StyledHeader.Menu1><Link className="color" to={`/mon-hoc/${tenHocKy}/${idHocKy}/mon-hoc`}><ImBook /><span >Môn Học</span></Link></StyledHeader.Menu1>   
-        <StyledHeader.Menu1><Link className="color" to={`/mon-hoc/${tenHocKy}/${idHocKy}/chon-giang-vien`}><BsPersonPlusFill /> <span >Chọn Giảng viên</span></Link></StyledHeader.Menu1>
-        <StyledHeader.Menu1><Link className="color" to={`/mon-hoc/${tenHocKy}/${idHocKy}/danh-sach-gvhd`}><BsFillPeopleFill /><span >Danh sách GVHD</span></Link></StyledHeader.Menu1> 
-        <StyledHeader.Menu1><Link className="color" to={`/mon-hoc/${tenHocKy}/${idHocKy}/danh-sach-sinhvien`}><IoIosPeople /><span >Danh sách Sinh viên</span></Link></StyledHeader.Menu1>
+        <StyledHeader.Menu1><Link className="color" to={`/mon-hoc/${tenHocKy}/${idHocKy}/${idBoMon}/mon-hoc`}><ImBook /><span >Môn Học</span></Link></StyledHeader.Menu1>   
+        <StyledHeader.Menu1><Link className="color" to={`/mon-hoc/${tenHocKy}/${idHocKy}/${idBoMon}/chon-giang-vien`}><BsPersonPlusFill /> <span >Chọn Giảng viên</span></Link></StyledHeader.Menu1>
+        <StyledHeader.Menu1><Link className="color" to={`/mon-hoc/${tenHocKy}/${idHocKy}/${idBoMon}/danh-sach-gvhd`}><BsFillPeopleFill /><span >Danh sách GVHD</span></Link></StyledHeader.Menu1> 
+        <StyledHeader.Menu1><Link className="color" to={`/mon-hoc/${tenHocKy}/${idHocKy}/${idBoMon}/danh-sach-sinhvien`}><IoIosPeople /><span >Danh sách Sinh viên</span></Link></StyledHeader.Menu1>
         {/* <StyledHeader.Menu1 ><Link to={`${match.url}/danh-sach-de-tai`}>Đề tài</Link></StyledHeader.Menu1>
         <StyledHeader.Menu1><Link to={`${match.url}/chon-de-tai-cho-GV`}>Phân công ĐT cho GV</Link></StyledHeader.Menu1> */}
         

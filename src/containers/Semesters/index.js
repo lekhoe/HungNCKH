@@ -204,7 +204,7 @@ const Semester = () => {
                     <tr key={index}>
 
                       <td>
-                        {item.lockData ==true ? <Button name={"Xử lý"} background={"#1abc9c"} disabled={true}/> : <Link to={`/mon-hoc/${item?.tenHocKy}/${item?.idHocKy}`}>
+                        {item.lockData ==true ? <Button name={"Xử lý"} background={"#1abc9c"} disabled={true}/> : <Link to={`/mon-hoc/${item?.tenHocKy}/${item?.idHocKy}/${item?.idBoMon}`}>
                           <Button name={"Xử lý"} background={"#1abc9c"} />
                         </Link>}
                         

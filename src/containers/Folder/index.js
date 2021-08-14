@@ -15,6 +15,7 @@ const Folder = () => {
   let { tenMonHoc } = useParams();
   let { idMonHoc } = useParams();
   let { typeApprover } = useParams();
+  let {idBoMon} =useParams();
   const dispatch = useDispatch();
   const folderSelecter = useSelector((state) => state.reducerFolder.list);
   useEffect(() => {
@@ -76,7 +77,7 @@ const Folder = () => {
             <StyledSemester.Body>
               {folderSelecter.map((item, index) => {
                 return (
-                  <Link to={`/mon-hoc/${tenHocKy}/${idHocKy}/${tenMonHoc}/${idMonHoc}/${typeApprover}/quan-ly-folder/file/${item.id}`}>
+                  <Link to={`/mon-hoc/${tenHocKy}/${idHocKy}/${idBoMon}/${tenMonHoc}/${idMonHoc}/${typeApprover}/quan-ly-folder/file/${item.id}`}>
                     <div className="folder" key={index}>
                       <div className="folderIcon"><FcFolder /></div>
                       <div className="nameFolder">{item.folderName}</div>

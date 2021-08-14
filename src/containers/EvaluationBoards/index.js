@@ -594,7 +594,7 @@ useEffect(() => {
               </div>
             </div>
           </div> : ''} */}
-          <div>
+          <div className="BodyDiv">
             <h1 style={{ display: 'flex', marginRight: 'auto' }}>Hội đồng - {tenHocKy}
 
             </h1>
