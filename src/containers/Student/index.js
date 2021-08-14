@@ -13,6 +13,7 @@ import Button from '../CommonComponent/Button/Button';
 import Modal from '../CommonComponent/Modal/Modal';
 import { FcFolder } from 'react-icons/fc';
 import { ImFileExcel } from 'react-icons/im';
+import { getFolders } from '../Folder/action';
 
 
 const StudentList = () => {
@@ -52,17 +53,24 @@ const StudentList = () => {
   }, []);
   console.log(idBoMonselect);
   // const StudentListSelecter1 = useSelector((state) => state.reducerStudentList.list1);
- // Thêm mới bằng file ex
+ 
+  // Thêm mới bằng file ex
  const GET_API_FILE_URL = `https://api.quanlydoan.live/api/File/SearchAll/FolderName/`;
  const [fileSelecter, setFileSelecter] = useState([]);
  const [showFile, setShowFile] = useState(false);
  const [fileName, setFileName] = useState('');
  const [idFile, setIdFile] = useState('');
  const [showPopupSaveFile, setShowPopupSaveFile] = useState(false);
+ //const [folderSelecter, setFolderSelecter]=useState([]);
  const folderSelecter = useSelector((state) => state.reducerFolder.list);
-
+ useEffect(() => {
+  getFolders()
+}, []);
+//  function callApiGetFolder(){
+//   axios.get(`https://api.quanlydoan.live​/api​/Folder​/SelectAll`, GetToken()).then((response) => { setFolderSelecter(JSON.parse(response.request.response))})
+//  }
  function callApiLoadFile(item) {
-  //setShowFile(true);
+  setShowFile(true);
   try {
     axios.get(`${GET_API_FILE_URL}${item.id}`, GetToken()).then(response => { setFileSelecter(JSON.parse(response.request.response)) })
   } catch (error) { }
@@ -72,6 +80,12 @@ function ConfirmSaveFilePoint(item) {
   setFileName(item.fileName)
   setIdFile(item.idFile)
   setShowPopupSaveFile(true)
+}
+function CallApiSaveFilePoint() {
+  axios.post('https://api.quanlydoan.live/api' + `/SinhVien/InsertExcel/${idFile}/${idHocKy}`,'', GetToken()).then(response => { alert(response.data.message+ "abc")}).catch(err => {alert(err.response.data.message)}) ;
+  //axios.post(API_FEEDBACK.POST_API_FEEDBACK_POINT.format(idFile), '', GetToken()).then((response) => { alert(response.data.message) })
+  setShowPopupSaveFile(false)
+  setAddFileEx(false)
 }
 
   //Call api
@@ -168,6 +182,24 @@ function ConfirmSaveFilePoint(item) {
           />
         ] : ''}
         // onClickClose={() => setShowPopupChooseFilePoint(false)}
+      />
+       <Modal
+        show={showPopupSaveFile}
+        mess={"Bạn có muốn Thêm mới từ file " + fileName + " không?"}
+        button={[
+          <Button
+            name={"Hủy"}
+            className={"button-input-point"}
+            onClick={() => setShowPopupSaveFile(false)}
+          />,
+          <Button
+            name={"OK"}
+            background={'#3498db'}
+            color
+            onClick={() => CallApiSaveFilePoint()}
+          />
+        ]}
+        onClickClose={() => setShowPopupSaveFile(false)}
       />
     <Modal 
       // show={addFileEx}

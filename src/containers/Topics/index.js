@@ -413,13 +413,13 @@ const Topic = () => {
                     className={"button-add-council"}
                     onClick={() => setShowPopupAdd(true)}
                   />
-                  <Button
+                  {/* <Button
                     name={"Thêm mới bằng file excel"}
                     background={"#3498db"}
                     color={"#ffffff"}
                     className={"button-add-council"}
                     onClick={() => setAddFileEx(true)}
-                  />
+                  /> */}
                   <Button
                     name={"Tính điểm"}
                     background={"#f39c12"}
