@@ -26,7 +26,8 @@ const Topic = () => {
   let { idMonHoc } = useParams();
   let { typeApprover } = useParams();
   let {idBoMon} =useParams();
-  const GET_API_STUDENTS_URL = "https://api.quanlydoan.live/api"
+  const GET_API_STUDENTS_URL = "https://api.quanlydoan.live/api";
+  const POST_API_FILE= "https://api.quanlydoan.live/api/DeTai/Detai/";
   //upload file ex
   const fileSelecters = useSelector((state) => state.reducerFile.list);
 
@@ -37,9 +38,11 @@ const Topic = () => {
   //   axios.get(GET_API_STUDENTS_URL + ``, GetToken()).then((response) => { setSemesterSelecter(response.data.data) })
   // };
   const submitFileEx =(idFile) =>{
-
-    axios.post(GET_API_STUDENTS_URL + `/DeTai​/Detai​/${idFile}​/${idHocKy}​/${idMonHoc}`,'', GetToken()).then(response => { alert(response.data.message)}).catch(err => {alert(err.response.data.message)}) ;
+// console.log("url= "+POST_API_FILE+`${idFile}​/${idHocKy}​/${idMonHoc}` );
+//https://api.quanlydoan.live/api/DeTai/Detai​/${idFile}​/${idHocKy}​/${idMonHoc}
+    axios.post(`${POST_API_FILE}${idFile}/${idHocKy}/${idMonHoc}`,'', GetToken()).then(response => { alert(response.data.data)}).catch(err => {alert(err.response.data.message)}) ;
     setAddFileEx(false);
+    
 
   }
 //--------------------
