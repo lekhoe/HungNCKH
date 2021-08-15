@@ -38,7 +38,7 @@ const Topic = () => {
   // };
   const submitFileEx =(idFile) =>{
 
-    axios.post(GET_API_STUDENTS_URL + `/SinhVien/InsertExcel/${idFile}/${idHocKy}`,'', GetToken()).then(response => { alert(response.data.message+ "abc")}).catch(err => {alert(err.response.data.message)}) ;
+    axios.post(GET_API_STUDENTS_URL + `/DeTai​/Detai​/${idFile}​/${idHocKy}​/${idMonHoc}`,'', GetToken()).then(response => { alert(response.data.message)}).catch(err => {alert(err.response.data.message)}) ;
     setAddFileEx(false);
 
   }
@@ -413,13 +413,13 @@ const Topic = () => {
                     className={"button-add-council"}
                     onClick={() => setShowPopupAdd(true)}
                   />
-                  {/* <Button
-                    name={"Thêm mới bằng file excel"}
-                    background={"#3498db"}
+                  <Button
+                    name={"Thêm bằng file excel"}
+                    background={"#1abc9c"}
                     color={"#ffffff"}
                     className={"button-add-council"}
                     onClick={() => setAddFileEx(true)}
-                  /> */}
+                  />
                   <Button
                     name={"Tính điểm"}
                     background={"#f39c12"}

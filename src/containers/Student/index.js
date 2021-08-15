@@ -14,6 +14,7 @@ import Modal from '../CommonComponent/Modal/Modal';
 import { FcFolder } from 'react-icons/fc';
 import { ImFileExcel } from 'react-icons/im';
 import { getFolders } from '../Folder/action';
+import Cookies from 'js-cookie';
 
 
 const StudentList = () => {
@@ -86,6 +87,29 @@ function CallApiSaveFilePoint() {
   //axios.post(API_FEEDBACK.POST_API_FEEDBACK_POINT.format(idFile), '', GetToken()).then((response) => { alert(response.data.message) })
   setShowPopupSaveFile(false)
   setAddFileEx(false)
+}
+
+//--------Xuất file ex---------------------
+
+function ExportFileCouncil() {
+  axios.get(`https://api.quanlydoan.live//api/SinhVien/DataSinhVien/${idHocKy}`
+    , {
+      responseType: 'blob',
+      headers: {
+        //"content-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        // "Accept": "application/json",
+        Authorization: 'Bearer ' + `${Cookies.get('token')}`
+      }
+    })
+    .then((response) => {
+      const blob = new Blob([response.data], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+      const url = URL.createObjectURL(blob);
+      window.open(url);
+
+    })
+    .catch((err) => {
+      //reject(err);
+    });
 }
 
   //Call api
@@ -309,6 +333,13 @@ function CallApiSaveFilePoint() {
                     className={"button-add-council"}
                     onClick={() => setAddFileEx(true)}
                   />
+                  <Button
+                      name={"Xuất Excel"}
+                      background={"#1abc9c"}
+                      color={"#ffffff"}
+                      className={"download-file-council-button"}
+                      onClick={() => ExportFileCouncil()}
+                    />
                   </StyledSemester.KC>
             </div>
             

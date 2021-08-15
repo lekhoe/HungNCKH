@@ -48,7 +48,7 @@ export const StyledSemester= {
     `,
     KC: styled.div`
     display: flex;
-    .save-studen-button{
+    .save-studen-button, .button-add-council{
         margin-right: 20px;
     }
     `,
