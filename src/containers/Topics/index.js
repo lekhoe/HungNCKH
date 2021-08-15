@@ -407,7 +407,7 @@ const Topic = () => {
                 {/* <button className="button-add" onClick={() => setShowPopupAdd(true)}>Thêm mới</button>
                 <button className="button-add-point" onClick={() => setShowPopup(true)}>Tính điểm</button> */}
               </h1>
-              <StyledSemester.Body >
+              <StyledSemester.Body style={{height: '470px', overflowY: "scroll"}}>
                 <div className="download-file-council">
                   <Button
                     name={"Thêm mới"}
