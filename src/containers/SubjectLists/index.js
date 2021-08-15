@@ -79,7 +79,7 @@ const SubjectList = () => {
   const onAddSubmit = () => {
       console.log("typeApprover "+typeApprover);
     if (maMonHoc && tenMonHoc ) {
-      if(typeApprover==null){
+      if(typeApprover){
         
       
       if (changeVersion) {
